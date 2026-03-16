@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flutter vs SwiftUI — Component Comparison</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #ffffff;
+      --bg2:     #f5f5f3;
+      --bg3:     #eeede9;
+      --text:    #1a1a18;
+      --text2:   #5a5a56;
+      --text3:   #9a9992;
+      --border:  rgba(0,0,0,0.09);
+      --border2: rgba(0,0,0,0.16);
+      --flutter: #0374D9;
+      --swiftui: #F05138;
+      --font:    'Inter', system-ui, sans-serif;
+      --mono:    'JetBrains Mono', 'Fira Code', monospace;
+      --radius:  8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      #161614;
+        --bg2:     #202020;
+        --bg3:     #2a2a28;
+        --text:    #e8e6e0;
+        --text2:   #a8a49c;
+        --text3:   #6a6860;
+        --border:  rgba(255,255,255,0.07);
+        --border2: rgba(255,255,255,0.14);
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════════════
+       PAGE HEADER
+    ══════════════════════════════════════ */
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border2);
+      padding: 16px 28px 12px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .logo.flutter { color: var(--flutter); }
+    .logo.swiftui { color: var(--swiftui); }
+
+    .logo svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .vs-pill {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--bg3);
+      color: var(--text3);
+    }
+
+    .header-meta {
+      font-size: 12px;
+      color: var(--text3);
+      margin-left: auto;
+    }
+
+    .header-subtitle {
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    /* ══════════════════════════════════════
+       FILTER BAR
+    ══════════════════════════════════════ */
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 10px 28px;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .filter-btn {
+      font-family: var(--font);
+      font-size: 12px;
+      padding: 4px 13px;
+      border-radius: 999px;
+      border: 0.5px solid var(--border2);
+      background: transparent;
+      color: var(--text2);
+      cursor: pointer;
+      transition: background 0.14s, color 0.14s, border-color 0.14s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { background: var(--bg2); }
+    .filter-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: transparent;
+    }
+
+    /* ══════════════════════════════════════
+       TABLE
+    ══════════════════════════════════════ */
+    .table-wrap { padding: 0 0 40px; }
+
+    .col-heads {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      position: sticky;
+      top: 89px;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border2);
+    }
+
+    .col-head {
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .col-head.flutter-head {
+      color: var(--flutter);
+      border-left: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .col-head.swiftui-head {
+      color: var(--swiftui);
+      border-left: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .col-sub {
+      font-size: 10px;
+      font-weight: 400;
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-left: 4px;
+    }
+    .col-sub.f { background: #E6F1FB; color: #0C447C; }
+    .col-sub.s { background: #FAECE7; color: #993C1D; }
+    @media (prefers-color-scheme: dark) {
+      .col-sub.f { background: #042C53; color: #B5D4F4; }
+      .col-sub.s { background: #4A1B0C; color: #F5C4B3; }
+    }
+
+    .section-band {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      background: var(--bg3);
+      border-top: 0.5px solid var(--border2);
+      border-bottom: 0.5px solid var(--border);
+      padding: 5px 16px;
+    }
+
+    .section-band span {
+      grid-column: 1 / -1;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      border-bottom: 0.5px solid var(--border);
+      transition: background 0.12s;
+    }
+    .row:hover { background: var(--bg2); }
+
+    .row-label {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .row-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .row-sub {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .cell {
+      padding: 12px 16px;
+      border-left: 0.5px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* code block */
+    .code-block {
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.6;
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      color: var(--text);
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    /* performance bar */
+    .perf-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .perf-track {
+      flex: 1;
+      height: 5px;
+      background: var(--bg3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .perf-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+    .perf-score {
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 28px;
+      text-align: right;
+    }
+
+    /* tag pill */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+    .tag-green  { background: #EAF3DE; color: #3B6D11; }
+    .tag-amber  { background: #FAEEDA; color: #854F0B; }
+    .tag-red    { background: #FCEBEB; color: #A32D2D; }
+    .tag-blue   { background: #E6F1FB; color: #185FA5; }
+    .tag-gray   { background: #F1EFE8; color: #5F5E5A; }
+    @media (prefers-color-scheme: dark) {
+      .tag-green  { background: #173404; color: #C0DD97; }
+      .tag-amber  { background: #412402; color: #FAC775; }
+      .tag-red    { background: #501313; color: #F7C1C1; }
+      .tag-blue   { background: #042C53; color: #B5D4F4; }
+      .tag-gray   { background: #2C2C2A; color: #D3D1C7; }
+    }
+
+    /* hidden row */
+    .row.hidden { display: none; }
+    .section-band.hidden { display: none; }
+
+    /* ══════════════════════════════════════
+       LEGEND
+    ══════════════════════════════════════ */
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 10px 28px;
+      border-top: 0.5px solid var(--border);
+      background: var(--bg);
+      font-size: 11px;
+      color: var(--text3);
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 700px) {
+      .col-heads,
+      .section-band,
+      .row {
+        grid-template-columns: 140px 1fr 1fr;
+      }
+      .code-block { font-size: 10px; }
+      .page-header { padding: 12px 14px 10px; }
+      .filter-bar { padding: 8px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── PAGE HEADER ── -->
+<header class="page-header">
+  <div class="header-top">
+    <div class="logo flutter">
+      <svg viewBox="0 0 48 48" fill="none"><path d="M13 28.7L24 17.5l11 11.2-4.5 4.6L24 26.6l-6.5 6.7L13 28.7z" fill="#54C5F8"/><path d="M24 17.5L13 6.3h11l11 11.2L24 17.5z" fill="#01579B"/><path d="M30.5 33.3L24 39.9l-6.5-6.6 6.5-6.7 6.5 6.7z" fill="#29B6F6"/></svg>
+      Flutter
+    </div>
+    <span class="vs-pill">VS</span>
+    <div class="logo swiftui">
+      <svg viewBox="0 0 48 48" fill="none"><path d="M38 14c-2-4.5-6-7.5-11-8C20 5.4 13 9 10 14.5c-1.8 3.2-2 7-.5 10.5-1.5 2-2.5 4.3-2.5 6.8C7 38.5 11.5 43 17 43c1.8 0 3.5-.5 5-1.4 1.5.9 3.2 1.4 5 1.4 5.5 0 10-4.5 10-10 0-2.5-1-4.8-2.5-6.8 1-2.5 1.2-5.3.5-7.8-.7-2-.5-4 0-4.2z" fill="#F05138"/><path d="M14 29.5c0 0 5-8 14-12-4-1-8.5.5-11.5 4-2 2.3-3 5-2.5 8z" fill="white" opacity="0.8"/></svg>
+      SwiftUI
+    </div>
+    <span class="header-meta">8 categories · 27 components</span>
+  </div>
+  <div class="header-subtitle">Side-by-side code + performance comparison</div>
+</header>
+
+<!-- ── FILTER BAR ── -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-cat="all">All</button>
+  <button class="filter-btn" data-cat="layout">Layout</button>
+  <button class="filter-btn" data-cat="text">Text</button>
+  <button class="filter-btn" data-cat="input">Input</button>
+  <button class="filter-btn" data-cat="list">Lists</button>
+  <button class="filter-btn" data-cat="nav">Navigation</button>
+  <button class="filter-btn" data-cat="media">Media</button>
+  <button class="filter-btn" data-cat="animation">Animation</button>
+  <button class="filter-btn" data-cat="state">State</button>
+</div>
+
+<!-- ── COLUMN HEADS ── -->
+<div class="col-heads">
+  <div class="col-head" style="color:var(--text3);font-size:10px;padding-top:13px;">Component</div>
+  <div class="col-head flutter-head">
+    Flutter <span class="col-sub f">Dart · Widget</span>
+  </div>
+  <div class="col-head swiftui-head">
+    SwiftUI <span class="col-sub s">Swift · View</span>
+  </div>
+</div>
+
+<!-- ── TABLE ── -->
+<div class="table-wrap" id="tableWrap"></div>
+
+<!-- ── LEGEND ── -->
+<div class="legend">
+  <span>Performance score (0–100):</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#639922"></span>90–100 Excellent</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#BA7517"></span>75–89 Good</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#E24B4A"></span>&lt;75 Limited</span>
+</div>
+
+<script>
+const DATA = [
+  {
+    section: "Layout", cat: "layout",
+    rows: [
+      {
+        name: "Vertical Stack", sub: "Column / VStack",
+        f: { code: `Column(
+  mainAxisAlignment:
+    MainAxisAlignment.start,
+  children: [
+    Text('Item A'),
+    Text('Item B'),
+    Text('Item C'),
+  ],
+)`, perf: 95, tag: "green", label: "Native" },
+        s: { code: `VStack(alignment: .leading,
+       spacing: 8) {
+  Text("Item A")
+  Text("Item B")
+  Text("Item C")
+}`, perf: 97, tag: "green", label: "Native" }
+      },
+      {
+        name: "Horizontal Stack", sub: "Row / HStack",
+        f: { code: `Row(
+  mainAxisAlignment:
+    MainAxisAlignment.spaceBetween,
+  children: [
+    Icon(Icons.star),
+    Text('Label'),
+    Icon(Icons.arrow_forward),
+  ],
+)`, perf: 95, tag: "green", label: "Native" },
+        s: { code: `HStack(spacing: 12) {
+  Image(systemName: "star")
+  Text("Label")
+  Image(systemName: "arrow.right")
+}`, perf: 97, tag: "green", label: "Native" }
+      },
+      {
+        name: "Z-Stack / Overlay", sub: "Stack / ZStack",
+        f: { code: `Stack(
+  children: [
+    Image.asset('bg.png'),
+    Positioned(
+      bottom: 8, left: 8,
+      child: Text('Caption'),
+    ),
+  ],
+)`, perf: 90, tag: "green", label: "Good" },
+        s: { code: `ZStack(alignment: .bottomLeading) {
+  Image("bg")
+  Text("Caption")
+    .padding(8)
+}`, perf: 94, tag: "green", label: "Native" }
+      },
+      {
+        name: "Spacer / Flexible", sub: "Expand available space",
+        f: { code: `Row(children: [
+  Text('Left'),
+  Spacer(),
+  Text('Right'),
+])`, perf: 97, tag: "green", label: "Zero cost" },
+        s: { code: `HStack {
+  Text("Left")
+  Spacer()
+  Text("Right")
+}`, perf: 99, tag: "green", label: "Zero cost" }
+      },
+      {
+        name: "Grid Layout", sub: "2D lazy grid",
+        f: { code: `GridView.builder(
+  gridDelegate:
+    SliverGridDelegateWith
+    FixedCrossAxisCount(
+      crossAxisCount: 2,
+    ),
+  itemCount: items.length,
+  itemBuilder: (ctx, i) =>
+    Card(child: Text(items[i])),
+)`, perf: 80, tag: "amber", label: "Medium" },
+        s: { code: `LazyVGrid(columns: [
+  GridItem(.flexible()),
+  GridItem(.flexible())
+]) {
+  ForEach(items) { item in
+    CardView(item)
+  }
+}`, perf: 89, tag: "green", label: "Lazy" }
+      },
+    ]
+  },
+  {
+    section: "Text & Typography", cat: "text",
+    rows: [
+      {
+        name: "Text Label", sub: "Basic display text",
+        f: { code: `Text(
+  'Hello World',
+  style: TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Colors.black87,
+  ),
+)`, perf: 98, tag: "green", label: "Skia render" },
+        s: { code: `Text("Hello World")
+  .font(.system(size: 16,
+    weight: .semibold))
+  .foregroundColor(.primary)`, perf: 99, tag: "green", label: "CoreText" }
+      },
+      {
+        name: "Rich Text", sub: "Inline styled spans",
+        f: { code: `RichText(
+  text: TextSpan(children: [
+    TextSpan(
+      text: 'Bold ',
+      style: TextStyle(
+        fontWeight: FontWeight.bold),
+    ),
+    TextSpan(text: 'normal'),
+  ]),
+)`, perf: 91, tag: "green", label: "Good" },
+        s: { code: `Text("**Bold** normal")
+// or concatenation:
+Text("Hello ") +
+Text("bold").bold() +
+Text(" world")`, perf: 94, tag: "green", label: "Native" }
+      },
+      {
+        name: "Text Overflow", sub: "Truncation / ellipsis",
+        f: { code: `Text(
+  longString,
+  maxLines: 1,
+  overflow: TextOverflow.ellipsis,
+  style: TextStyle(fontSize: 14),
+)`, perf: 97, tag: "green", label: "Native" },
+        s: { code: `Text(longString)
+  .lineLimit(1)
+  .truncationMode(.tail)
+  .font(.system(size: 14))`, perf: 98, tag: "green", label: "Native" }
+      },
+    ]
+  },
+  {
+    section: "Input Controls", cat: "input",
+    rows: [
+      {
+        name: "Text Field", sub: "Single-line text input",
+        f: { code: `TextField(
+  controller: _ctrl,
+  decoration: InputDecoration(
+    labelText: 'Name',
+    border: OutlineInputBorder(),
+    prefixIcon: Icon(Icons.person),
+  ),
+  onChanged: (v) => setState((){}),
+)`, perf: 87, tag: "amber", label: "Custom render" },
+        s: { code: `TextField("Name",
+  text: $name)
+  .textFieldStyle(.roundedBorder)
+  .padding()`, perf: 96, tag: "green", label: "UIKit-native" }
+      },
+      {
+        name: "Toggle / Switch", sub: "Boolean on/off",
+        f: { code: `Switch(
+  value: _isOn,
+  activeColor: Colors.blue,
+  onChanged: (v) =>
+    setState(() => _isOn = v),
+)`, perf: 93, tag: "green", label: "Animated" },
+        s: { code: `Toggle("Notifications",
+       isOn: $isOn)
+  .tint(.blue)`, perf: 98, tag: "green", label: "OS native" }
+      },
+      {
+        name: "Slider", sub: "Range value selector",
+        f: { code: `Slider(
+  value: _value,
+  min: 0.0,
+  max: 100.0,
+  divisions: 10,
+  label: _value.round().toString(),
+  onChanged: (v) =>
+    setState(() => _value = v),
+)`, perf: 92, tag: "green", label: "Smooth 60fps" },
+        s: { code: `Slider(
+  value: $value,
+  in: 0...100,
+  step: 10,
+  label: Text("\(Int(value))")
+)`, perf: 97, tag: "green", label: "OS native" }
+      },
+      {
+        name: "Picker / Dropdown", sub: "Select from options",
+        f: { code: `DropdownButton<String>(
+  value: _selected,
+  items: options.map((v) =>
+    DropdownMenuItem(
+      value: v,
+      child: Text(v),
+    )).toList(),
+  onChanged: (v) =>
+    setState(() => _selected = v),
+)`, perf: 80, tag: "amber", label: "Custom" },
+        s: { code: `Picker("Select",
+  selection: $choice) {
+  ForEach(options, id: \\.self) {
+    Text($0).tag($0)
+  }
+}
+.pickerStyle(.menu)`, perf: 96, tag: "green", label: "OS native" }
+      },
+      {
+        name: "Button", sub: "Tap action",
+        f: { code: `ElevatedButton(
+  onPressed: () => doSomething(),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.blue,
+    shape: RoundedRectangleBorder(
+      borderRadius:
+        BorderRadius.circular(8)),
+  ),
+  child: Text('Submit'),
+)`, perf: 95, tag: "green", label: "Material" },
+        s: { code: `Button("Submit") {
+  doSomething()
+}
+.buttonStyle(.borderedProminent)
+.tint(.blue)`, perf: 98, tag: "green", label: "Native" }
+      },
+    ]
+  },
+  {
+    section: "Lists & Collections", cat: "list",
+    rows: [
+      {
+        name: "Lazy List", sub: "Virtualized scrolling list",
+        f: { code: `ListView.builder(
+  itemCount: items.length,
+  itemBuilder: (ctx, i) => ListTile(
+    leading: CircleAvatar(
+      child: Text('\${items[i][0]}'),
+    ),
+    title: Text(items[i]),
+    trailing: Icon(Icons.chevron_right),
+  ),
+)`, perf: 90, tag: "green", label: "Lazy" },
+        s: { code: `List(items) { item in
+  HStack {
+    Circle()
+      .frame(width: 32, height: 32)
+      .overlay(Text(item.prefix(1)))
+    Text(item)
+    Spacer()
+    Image(systemName: "chevron.right")
+  }
+}`, perf: 93, tag: "green", label: "UITableView" }
+      },
+      {
+        name: "Swipe to Delete", sub: "Swipe gesture actions",
+        f: { code: `Dismissible(
+  key: Key(item.id),
+  direction: DismissDirection.endToStart,
+  background: Container(
+    color: Colors.red,
+    alignment: Alignment.centerRight,
+    child: Icon(Icons.delete,
+      color: Colors.white),
+  ),
+  onDismissed: (_) => deleteItem(item),
+  child: ListTile(title: Text(item.name)),
+)`, perf: 78, tag: "amber", label: "Custom impl" },
+        s: { code: `List {
+  ForEach(items) { item in
+    Text(item.name)
+      .swipeActions(edge: .trailing) {
+        Button("Delete",
+          role: .destructive) {
+          delete(item)
+        }
+      }
+  }
+  .onDelete(perform: deleteItems)
+}`, perf: 95, tag: "green", label: "Native" }
+      },
+      {
+        name: "Section Groups", sub: "Grouped with headers",
+        f: { code: `// Manual widget approach
+Column(children: [
+  Container(
+    padding: EdgeInsets.all(8),
+    color: Colors.grey[100],
+    child: Text('SECTION A',
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.bold)),
+  ),
+  ...groupA.map((item) =>
+    ListTile(title: Text(item))),
+])`, perf: 74, tag: "amber", label: "Manual" },
+        s: { code: `List {
+  Section("Section A") {
+    ForEach(groupA) { item in
+      Text(item.name)
+    }
+  }
+  Section("Section B") {
+    ForEach(groupB) { item in
+      Text(item.name)
+    }
+  }
+}
+.listStyle(.insetGrouped)`, perf: 97, tag: "green", label: "Native" }
+      },
+    ]
+  },
+  {
+    section: "Navigation", cat: "nav",
+    rows: [
+      {
+        name: "Push Navigation", sub: "Stack push / pop",
+        f: { code: `// Push
+Navigator.push(context,
+  MaterialPageRoute(
+    builder: (_) => DetailScreen(),
+  ),
+);
+
+// With named route
+Navigator.pushNamed(
+  context, '/detail');`, perf: 88, tag: "amber", label: "Imperative" },
+        s: { code: `// Push via NavigationLink
+NavigationLink("Detail",
+  destination: DetailView())
+
+// Programmatic push
+NavigationStack(path: $path) {
+  ...
+  .navigationDestination(
+    for: Item.self) { item in
+    DetailView(item: item)
+  }
+}`, perf: 93, tag: "green", label: "Declarative" }
+      },
+      {
+        name: "Bottom Tab Bar", sub: "Tab navigation",
+        f: { code: `Scaffold(
+  body: _screens[_currentIndex],
+  bottomNavigationBar:
+    BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: (i) =>
+        setState(() =>
+          _currentIndex = i),
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search'),
+      ],
+    ),
+)`, perf: 90, tag: "green", label: "Material" },
+        s: { code: `TabView(selection: $tab) {
+  HomeView()
+    .tabItem {
+      Label("Home",
+        systemImage: "house")
+    }
+    .tag(Tab.home)
+  SearchView()
+    .tabItem {
+      Label("Search",
+        systemImage: "magnifyingglass")
+    }
+    .tag(Tab.search)
+}`, perf: 97, tag: "green", label: "OS native" }
+      },
+      {
+        name: "Modal Sheet", sub: "Present modal overlay",
+        f: { code: `showModalBottomSheet(
+  context: context,
+  isScrollControlled: true,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius
+      .vertical(top: Radius.circular(16)),
+  ),
+  builder: (_) => MySheetWidget(),
+);`, perf: 85, tag: "amber", label: "Custom" },
+        s: { code: `.sheet(isPresented: $showSheet) {
+  MySheetView()
+    .presentationDetents(
+      [.medium, .large])
+    .presentationDragIndicator(
+      .visible)
+}`, perf: 97, tag: "green", label: "Native sheet" }
+      },
+    ]
+  },
+  {
+    section: "Media & Graphics", cat: "media",
+    rows: [
+      {
+        name: "Network Image", sub: "Async image loading",
+        f: { code: `Image.network(
+  'https://example.com/photo.jpg',
+  width: 200,
+  height: 200,
+  fit: BoxFit.cover,
+  loadingBuilder: (ctx, child, p) =>
+    p == null ? child
+    : CircularProgressIndicator(),
+  errorBuilder: (ctx, e, s) =>
+    Icon(Icons.broken_image),
+)`, perf: 83, tag: "amber", label: "Dart HTTP" },
+        s: { code: `AsyncImage(url: URL(string: url)) {
+  phase in
+  switch phase {
+  case .success(let img):
+    img.resizable()
+       .scaledToFill()
+  case .failure:
+    Image(systemName: "xmark")
+  default:
+    ProgressView()
+  }
+}`, perf: 92, tag: "green", label: "URLSession" }
+      },
+      {
+        name: "Icon", sub: "Vector / system icon",
+        f: { code: `Icon(
+  Icons.favorite_rounded,
+  color: Colors.red,
+  size: 28,
+)
+
+// Custom SVG icon
+SvgPicture.asset(
+  'assets/icons/custom.svg',
+  width: 28,
+)`, perf: 98, tag: "green", label: "Canvas draw" },
+        s: { code: `// SF Symbols (100k+ icons)
+Image(systemName: "heart.fill")
+  .font(.system(size: 28))
+  .foregroundColor(.red)
+  .symbolRenderingMode(.multicolor)
+  .symbolEffect(.bounce)`, perf: 99, tag: "green", label: "SF Symbols" }
+      },
+    ]
+  },
+  {
+    section: "Animation", cat: "animation",
+    rows: [
+      {
+        name: "Implicit Animation", sub: "Auto-animate on change",
+        f: { code: `AnimatedContainer(
+  duration: Duration(milliseconds: 300),
+  curve: Curves.easeInOut,
+  width: _expanded ? 240 : 100,
+  height: 50,
+  color: _expanded
+    ? Colors.blue : Colors.grey,
+  child: Center(child: Text('Tap')),
+)`, perf: 92, tag: "green", label: "Smooth 60fps" },
+        s: { code: `RoundedRectangle(cornerRadius: 12)
+  .fill(_expanded ? .blue : .gray)
+  .frame(
+    width: _expanded ? 240 : 100,
+    height: 50)
+  .animation(
+    .easeInOut(duration: 0.3),
+    value: _expanded)`, perf: 96, tag: "green", label: "Core Animation" }
+      },
+      {
+        name: "Spring Animation", sub: "Physics-based spring",
+        f: { code: `// Using flutter_hooks or
+// AnimationController
+_controller.animateTo(
+  1.0,
+  duration: Duration(ms: 500),
+  curve: Curves.elasticOut,
+);
+
+// Or with TweenAnimationBuilder
+TweenAnimationBuilder(
+  tween: Tween(begin: 0.0, end: 1.0),
+  duration: Duration(ms: 400),
+  curve: Curves.easeOutBack,
+  builder: (ctx, v, _) =>
+    Transform.scale(scale: v, child: widget),
+)`, perf: 85, tag: "amber", label: "Manual ctrl" },
+        s: { code: `withAnimation(
+  .spring(
+    response: 0.4,
+    dampingFraction: 0.6,
+    blendDuration: 0.1)
+) {
+  isVisible.toggle()
+}`, perf: 96, tag: "green", label: "CA-backed" }
+      },
+      {
+        name: "Lottie / Rive", sub: "Complex vector anim",
+        f: { code: `// lottie package
+Lottie.network(
+  'https://assets/.../anim.json',
+  width: 200,
+  height: 200,
+  repeat: true,
+)
+
+// Rive package
+RiveAnimation.asset(
+  'assets/anim.riv',
+)`, perf: 68, tag: "red", label: "3rd-party pkg" },
+        s: { code: `// No native Lottie support.
+// Use UIViewRepresentable bridge:
+struct LottieView:
+  UIViewRepresentable {
+  // ... bridge to Lottie SDK
+}
+
+// Rive (official pkg available)
+RiveViewModel(fileName: "anim")
+  .view()`, perf: 70, tag: "red", label: "Bridge only" }
+      },
+    ]
+  },
+  {
+    section: "State Management", cat: "state",
+    rows: [
+      {
+        name: "Local State", sub: "Component-scoped",
+        f: { code: `class _CounterState
+    extends State<Counter> {
+  int _count = 0;
+
+  void _increment() {
+    setState(() => _count++);
+  }
+
+  @override
+  Widget build(BuildContext ctx) =>
+    Text('$_count');
+}`, perf: 96, tag: "green", label: "setState" },
+        s: { code: `struct CounterView: View {
+  @State private var count = 0
+
+  var body: some View {
+    VStack {
+      Text("\(count)")
+      Button("Increment") {
+        count += 1
+      }
+    }
+  }
+}`, perf: 98, tag: "green", label: "@State" }
+      },
+      {
+        name: "Shared / Observable", sub: "Cross-widget state",
+        f: { code: `// Provider / Riverpod (3rd party)
+final counterProvider =
+  StateNotifierProvider<Counter,int>(
+    (ref) => Counter());
+
+// Consume
+Consumer(
+  builder: (ctx, ref, _) {
+    final count = ref.watch(
+      counterProvider);
+    return Text('$count');
+  },
+)`, perf: 86, tag: "amber", label: "3rd-party" },
+        s: { code: `// Built-in Combine/Observable
+@Observable
+class AppModel {
+  var count = 0
+}
+
+struct MyView: View {
+  @Environment(AppModel.self)
+  var model
+
+  var body: some View {
+    Text("\(model.count)")
+  }
+}`, perf: 94, tag: "green", label: "Built-in" }
+      },
+      {
+        name: "Side Effects", sub: "Lifecycle / onMount",
+        f: { code: `@override
+void initState() {
+  super.initState();
+  fetchData();    // on mount
+}
+
+@override
+void didUpdateWidget(old) {
+  super.didUpdateWidget(old);
+  if (old.id != widget.id)
+    refetch();
+}
+
+@override
+void dispose() {
+  _controller.dispose();
+  super.dispose();
+}`, perf: 90, tag: "green", label: "Lifecycle" },
+        s: { code: `Text("Hello")
+  .onAppear {
+    fetchData()    // on mount
+  }
+  .onChange(of: id) { _, new in
+    refetch(id: new)
+  }
+  .onDisappear {
+    cleanup()
+  }
+  .task {
+    await loadAsync()
+  }`, perf: 95, tag: "green", label: "Modifier-based" }
+      },
+    ]
+  },
+];
+
+function perfColor(v) {
+  if (v >= 90) return "#639922";
+  if (v >= 75) return "#BA7517";
+  return "#E24B4A";
+}
+
+function escHtml(s) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function buildTable(cat) {
+  const wrap = document.getElementById('tableWrap');
+  let html = '';
+
+  DATA.forEach(section => {
+    const rows = section.rows;
+    const visibleRows = cat === 'all' ? rows : rows.filter(() => section.cat === cat);
+    if (cat !== 'all' && section.cat !== cat) return;
+
+    html += `<div class="section-band"><span>${section.section}</span></div>`;
+
+    rows.forEach(row => {
+      const fc = perfColor(row.f.perf);
+      const sc = perfColor(row.s.perf);
+      html += `
+<div class="row" data-cat="${section.cat}">
+  <div class="row-label">
+    <span class="row-name">${row.name}</span>
+    <span class="row-sub">${row.sub}</span>
+  </div>
+  <div class="cell">
+    <pre class="code-block">${escHtml(row.f.code)}</pre>
+    <div class="perf-row">
+      <div class="perf-track">
+        <div class="perf-fill" style="width:${row.f.perf}%;background:${fc}"></div>
+      </div>
+      <span class="perf-score" style="color:${fc}">${row.f.perf}</span>
+      <span class="tag tag-${row.f.tag}">${row.f.label}</span>
+    </div>
+  </div>
+  <div class="cell">
+    <pre class="code-block">${escHtml(row.s.code)}</pre>
+    <div class="perf-row">
+      <div class="perf-track">
+        <div class="perf-fill" style="width:${row.s.perf}%;background:${sc}"></div>
+      </div>
+      <span class="perf-score" style="color:${sc}">${row.s.perf}</span>
+      <span class="tag tag-${row.s.tag}">${row.s.label}</span>
+    </div>
+  </div>
+</div>`;
+    });
+  });
+
+  wrap.innerHTML = html;
+}
+
+// Filter buttons
+document.getElementById('filterBar').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+
+  if (cat === 'all') {
+    buildTable('all');
+  } else {
+    buildTable(cat);
+  }
+});
+
+// Initial render
+buildTable('all');
+</script>
+</body>
+</html>
