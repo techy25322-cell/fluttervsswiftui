@@ -7,319 +7,344 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:      #ffffff;
-      --bg2:     #f5f5f3;
-      --bg3:     #eeede9;
-      --text:    #1a1a18;
-      --text2:   #5a5a56;
-      --text3:   #9a9992;
-      --border:  rgba(0,0,0,0.09);
-      --border2: rgba(0,0,0,0.16);
-      --flutter: #0374D9;
-      --swiftui: #F05138;
-      --font:    'Inter', system-ui, sans-serif;
-      --mono:    'JetBrains Mono', 'Fira Code', monospace;
-      --display: 'Syne', sans-serif;
-      --radius:  8px;
-      --radius-lg: 12px;
-      --green:   #4ade80;
-      --amber:   #fb923c;
+      --bg:#ffffff;--bg2:#f5f5f3;--bg3:#eeede9;--text:#1a1a18;--text2:#5a5a56;--text3:#9a9992;
+      --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.16);
+      --flutter:#0374D9;--swiftui:#F05138;
+      --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono','Fira Code',monospace;--display:'Syne',sans-serif;
+      --radius:8px;--radius-lg:12px;--green:#4ade80;--amber:#fb923c;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg:      #161614;
-        --bg2:     #202020;
-        --bg3:     #2a2a28;
-        --text:    #e8e6e0;
-        --text2:   #a8a49c;
-        --text3:   #6a6860;
-        --border:  rgba(255,255,255,0.07);
-        --border2: rgba(255,255,255,0.14);
-      }
+    @media(prefers-color-scheme:dark){
+      :root{--bg:#161614;--bg2:#202020;--bg3:#2a2a28;--text:#e8e6e0;--text2:#a8a49c;--text3:#6a6860;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);}
     }
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+    .site-nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:0.5px solid var(--border2);padding:0 28px;display:flex;align-items:center;gap:0;}
+    .nav-logo{display:flex;align-items:center;gap:8px;padding:14px 0;margin-right:auto;}
+    .nav-logo svg{width:18px;height:18px;}
+    .nav-logo-f{color:var(--flutter);font-weight:700;font-size:15px;display:flex;align-items:center;gap:4px;}
+    .nav-logo-s{color:var(--swiftui);font-weight:700;font-size:15px;display:flex;align-items:center;gap:4px;}
+    .nav-vs{font-size:10px;font-weight:700;background:var(--bg3);color:var(--text3);padding:2px 7px;border-radius:4px;}
+    .nav-tab{font-size:13px;font-weight:500;padding:16px 20px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;text-decoration:none;}
+    .nav-tab:hover{color:var(--text);}
+    .nav-tab.active{color:var(--text);border-bottom-color:var(--text);}
+    #section-render,#section-explain,#section-compare{scroll-margin-top:52px;}
+    .hero-band{background:var(--bg2);border-bottom:0.5px solid var(--border2);padding:48px 40px 0;}
+    .hero-top{max-width:680px;margin-bottom:32px;}
+    .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--text3);text-transform:uppercase;margin-bottom:14px;}
+    .hero-h1{font-family:var(--display);font-size:clamp(26px,4vw,44px);font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:12px;}
+    .hero-h1 .fw{color:var(--flutter);}
+    .hero-h1 .sw{color:var(--swiftui);}
+    .hero-sub{font-size:14px;color:var(--text2);line-height:1.65;max-width:520px;}
+    .render-lab{background:var(--bg);border:0.5px solid var(--border2);border-bottom:none;border-radius:12px 12px 0 0;overflow:hidden;}
+    .lab-tabs{display:flex;border-bottom:0.5px solid var(--border2);background:var(--bg2);}
+    .lab-tab{font-size:12px;font-weight:500;padding:10px 20px;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;transition:all 0.14s;white-space:nowrap;}
+    .lab-tab:hover{color:var(--text);}
+    .lab-tab.active{color:var(--text);border-bottom-color:var(--text);background:var(--bg);}
+    .lab-body{display:grid;grid-template-columns:1fr 1fr;}
+    .lab-pane{display:flex;flex-direction:column;border-right:0.5px solid var(--border2);}
+    .lab-pane:last-child{border-right:none;}
+    .lab-pane-head{padding:10px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--bg2);}
+    .lab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .lab-pane-name{font-size:12px;font-weight:600;}
+    .lab-pane-sub{font-size:10px;color:var(--text3);margin-left:auto;font-family:var(--mono);}
+    .lab-canvas-wrap{padding:10px;background:var(--bg2);flex:1;}
+    .lab-canvas-wrap canvas{border-radius:6px;display:block;width:100%;border:0.5px solid var(--border);}
+    .lab-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-top:0.5px solid var(--border);}
+    .lab-stat{background:var(--bg);padding:8px 12px;}
+    .lab-stat-label{font-size:10px;color:var(--text3);margin-bottom:2px;}
+    .lab-stat-val{font-size:15px;font-weight:600;font-family:var(--mono);color:var(--text);}
+    .lab-controls{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2);background:var(--bg);flex-wrap:wrap;}
+    .lab-ctrl-btn{font-family:var(--font);font-size:11px;font-weight:500;padding:5px 14px;border-radius:999px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.14s;}
+    .lab-ctrl-btn:hover{background:var(--bg2);color:var(--text);}
+    .lab-ctrl-btn.on{background:var(--text);color:var(--bg);border-color:transparent;}
+    .lab-ctrl-label{font-size:11px;color:var(--text3);}
+    .lab-speed-slider{flex:1;min-width:80px;max-width:160px;}
+    .lab-perf-tracks{padding:10px 16px;display:flex;flex-direction:column;gap:6px;border-bottom:0.5px solid var(--border2);background:var(--bg);}
+    .lab-perf-line{display:flex;align-items:center;gap:8px;}
+    .lab-perf-lbl{font-size:11px;color:var(--text2);width:140px;flex-shrink:0;}
+    .lab-perf-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+    .lab-perf-fill{height:100%;border-radius:3px;transition:width 0.35s;}
+    .lab-perf-val{font-size:11px;font-weight:600;min-width:34px;text-align:right;font-family:var(--mono);}
+    .lab-diff{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--bg2);}
+    .lab-diff-col{padding:12px 16px;border-right:0.5px solid var(--border);}
+    .lab-diff-col:last-child{border-right:none;}
+    .lab-diff-head{font-size:11px;font-weight:600;margin-bottom:8px;}
+    .lab-diff-item{font-size:11px;color:var(--text2);display:flex;align-items:flex-start;gap:6px;margin-bottom:5px;line-height:1.5;}
+    .lab-diff-ic{font-size:10px;flex-shrink:0;margin-top:1px;font-weight:700;}
+    .page-header{background:var(--bg);border-bottom:0.5px solid var(--border2);padding:16px 28px 12px;}
+    .header-top{display:flex;align-items:center;gap:12px;margin-bottom:4px;flex-wrap:wrap;}
+    .logo{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:700;letter-spacing:-0.02em;}
+    .logo.flutter{color:var(--flutter);}
+    .logo.swiftui{color:var(--swiftui);}
+    .logo svg{width:20px;height:20px;flex-shrink:0;}
+    .vs-pill{font-size:10px;font-weight:700;letter-spacing:0.06em;padding:3px 8px;border-radius:4px;background:var(--bg3);color:var(--text3);}
+    .header-meta{font-size:12px;color:var(--text3);margin-left:auto;}
+    .header-subtitle{font-size:12px;color:var(--text3);}
+    .filter-bar{display:flex;gap:6px;flex-wrap:wrap;padding:10px 28px;background:var(--bg);border-bottom:0.5px solid var(--border);}
+    .filter-btn{font-family:var(--font);font-size:12px;padding:4px 13px;border-radius:999px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:background 0.14s,color 0.14s;white-space:nowrap;}
+    .filter-btn:hover{background:var(--bg2);}
+    .filter-btn.active{background:var(--text);color:var(--bg);border-color:transparent;}
+    .table-wrap{padding:0 0 40px;}
+    .col-heads{display:grid;grid-template-columns:200px 1fr 1fr;position:sticky;top:52px;z-index:100;background:var(--bg);border-bottom:0.5px solid var(--border2);}
+    .col-head{padding:10px 16px;font-size:12px;font-weight:600;}
+    .col-head.flutter-head{color:var(--flutter);border-left:0.5px solid var(--border);display:flex;align-items:center;gap:6px;}
+    .col-head.swiftui-head{color:var(--swiftui);border-left:0.5px solid var(--border);display:flex;align-items:center;gap:6px;}
+    .col-sub{font-size:10px;font-weight:400;padding:2px 7px;border-radius:999px;margin-left:4px;}
+    .col-sub.f{background:#E6F1FB;color:#0C447C;}
+    .col-sub.s{background:#FAECE7;color:#993C1D;}
+    @media(prefers-color-scheme:dark){.col-sub.f{background:#042C53;color:#B5D4F4;}.col-sub.s{background:#4A1B0C;color:#F5C4B3;}}
+    .section-band{display:grid;grid-template-columns:200px 1fr 1fr;background:var(--bg3);border-top:0.5px solid var(--border2);border-bottom:0.5px solid var(--border);padding:5px 16px;}
+    .section-band span{grid-column:1/-1;font-size:10px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;}
+    .row{display:grid;grid-template-columns:200px 1fr 1fr;border-bottom:0.5px solid var(--border);transition:background 0.12s;}
+    .row:hover{background:var(--bg2);}
+    .row-label{padding:12px 16px;display:flex;flex-direction:column;gap:3px;}
+    .row-name{font-size:13px;font-weight:500;color:var(--text);}
+    .row-sub{font-size:11px;color:var(--text3);}
+    .cell{padding:12px 16px;border-left:0.5px solid var(--border);display:flex;flex-direction:column;gap:8px;}
+    .code-block{font-family:var(--mono);font-size:11px;line-height:1.6;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);white-space:pre;overflow-x:auto;}
+    .perf-row{display:flex;align-items:center;gap:8px;}
+    .perf-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+    .perf-fill{height:100%;border-radius:3px;}
+    .perf-score{font-size:11px;font-weight:600;min-width:28px;text-align:right;}
+    .tag{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:999px;}
+    .tag-green{background:#EAF3DE;color:#3B6D11;}
+    .tag-amber{background:#FAEEDA;color:#854F0B;}
+    .tag-red{background:#FCEBEB;color:#A32D2D;}
+    .tag-blue{background:#E6F1FB;color:#185FA5;}
+    .tag-gray{background:#F1EFE8;color:#5F5E5A;}
+    @media(prefers-color-scheme:dark){
+      .tag-green{background:#173404;color:#C0DD97;}
+      .tag-amber{background:#412402;color:#FAC775;}
+      .tag-red{background:#501313;color:#F7C1C1;}
+      .tag-blue{background:#042C53;color:#B5D4F4;}
+      .tag-gray{background:#2C2C2A;color:#D3D1C7;}
+    }
+    .legend{display:flex;gap:16px;flex-wrap:wrap;padding:10px 28px;border-top:0.5px solid var(--border);background:var(--bg);font-size:11px;color:var(--text3);}
+    .legend-item{display:flex;align-items:center;gap:5px;}
+    .legend-dot{width:8px;height:8px;border-radius:50%;}
 
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
-
-    /* ══════════════════════════════════
-       STICKY NAV
-    ══════════════════════════════════ */
-    .site-nav {
-      position: sticky; top: 0; z-index: 300;
+    /* ════════════════════════
+       EXPLANATION SECTION
+    ════════════════════════ */
+    .explain-section {
+      padding: 56px 40px;
       background: var(--bg);
       border-bottom: 0.5px solid var(--border2);
-      padding: 0 28px;
-      display: flex; align-items: center; gap: 0;
     }
-
-    .nav-logo {
-      display: flex; align-items: center; gap: 8px;
-      padding: 14px 0;
-      margin-right: auto;
-    }
-    .nav-logo svg { width: 18px; height: 18px; }
-    .nav-logo-f { color: var(--flutter); font-weight: 700; font-size: 15px; display:flex;align-items:center;gap:4px; }
-    .nav-logo-s { color: var(--swiftui); font-weight: 700; font-size: 15px; display:flex;align-items:center;gap:4px; }
-    .nav-vs { font-size: 10px; font-weight: 700; background: var(--bg3); color: var(--text3); padding: 2px 7px; border-radius: 4px; }
-
-    .nav-tab {
-      font-size: 13px; font-weight: 500;
-      padding: 16px 20px;
-      color: var(--text3);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.15s;
-      white-space: nowrap;
-      text-decoration: none;
-    }
-    .nav-tab:hover { color: var(--text); }
-    .nav-tab.active { color: var(--text); border-bottom-color: var(--text); }
-
-    /* ══════════════════════════════════
-       HERO SECTION
-    ══════════════════════════════════ */
-    #section-render { scroll-margin-top: 52px; }
-    #section-compare { scroll-margin-top: 52px; }
-
-    .hero-band {
-      background: var(--bg2);
-      border-bottom: 0.5px solid var(--border2);
-      padding: 48px 40px 0;
-    }
-
-    .hero-top {
-      max-width: 680px;
-      margin-bottom: 32px;
-    }
-
-    .hero-eyebrow {
+    .explain-eyebrow {
       font-family: var(--mono);
       font-size: 11px;
       letter-spacing: 0.1em;
       color: var(--text3);
       text-transform: uppercase;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
-
-    .hero-h1 {
+    .explain-title {
       font-family: var(--display);
-      font-size: clamp(26px, 4vw, 44px);
+      font-size: clamp(22px, 3vw, 36px);
       font-weight: 800;
-      line-height: 1.1;
       letter-spacing: -0.03em;
-      margin-bottom: 12px;
+      line-height: 1.15;
+      margin-bottom: 40px;
     }
-    .hero-h1 .fw { color: var(--flutter); }
-    .hero-h1 .sw { color: var(--swiftui); }
-
-    .hero-sub {
-      font-size: 14px;
+    .explain-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 860px;
+    }
+    .explain-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 24px;
+      position: relative;
+    }
+    .step-num-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .step-line {
+      width: 1.5px;
+      flex: 1;
+      margin: 4px 0;
+      background: var(--border2);
+    }
+    .explain-step:last-child .step-line { display: none; }
+    .step-body {
+      padding-bottom: 36px;
+    }
+    .explain-step:last-child .step-body { padding-bottom: 0; }
+    .step-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      margin-top: 8px;
+    }
+    .step-heading {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .step-body p {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.75;
+      margin-bottom: 12px;
+      max-width: 620px;
+    }
+    .step-body p:last-of-type { margin-bottom: 0; }
+    .step-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .step-compare-card {
+      border-radius: 8px;
+      padding: 12px 14px;
+      border: 0.5px solid var(--border2);
+    }
+    .step-compare-head {
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .step-compare-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .step-compare-item {
+      font-size: 11px;
       color: var(--text2);
       line-height: 1.65;
-      max-width: 520px;
-    }
-
-    /* ── RENDER LAB ── */
-    .render-lab {
-      background: var(--bg);
-      border: 0.5px solid var(--border2);
-      border-bottom: none;
-      border-radius: 12px 12px 0 0;
-      overflow: hidden;
-    }
-
-    .lab-tabs {
       display: flex;
-      border-bottom: 0.5px solid var(--border2);
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .step-compare-ic {
+      flex-shrink: 0;
+      font-size: 10px;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+    .step-callout {
       background: var(--bg2);
+      border-left: 3px solid;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.6;
+      max-width: 600px;
     }
-    .lab-tab {
-      font-size: 12px; font-weight: 500;
-      padding: 10px 20px;
-      cursor: pointer;
-      color: var(--text3);
-      border-bottom: 2px solid transparent;
-      transition: all 0.14s;
-      white-space: nowrap;
+    .step-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 14px;
+      max-width: 560px;
     }
-    .lab-tab:hover { color: var(--text); }
-    .lab-tab.active { color: var(--text); border-bottom-color: var(--text); background: var(--bg); }
-
-    .lab-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .lab-pane {
-      display: flex; flex-direction: column;
-      border-right: 0.5px solid var(--border2);
-    }
-    .lab-pane:last-child { border-right: none; }
-
-    .lab-pane-head {
-      padding: 10px 16px;
-      border-bottom: 0.5px solid var(--border);
-      display: flex; align-items: center; gap: 8px;
-      background: var(--bg2);
-    }
-    .lab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .lab-pane-name { font-size: 12px; font-weight: 600; }
-    .lab-pane-sub { font-size: 10px; color: var(--text3); margin-left: auto; font-family: var(--mono); }
-
-    .lab-canvas-wrap {
-      padding: 10px;
-      background: var(--bg2);
-      flex: 1;
-    }
-    .lab-canvas-wrap canvas {
+    .pipeline-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
       border-radius: 6px;
-      display: block;
-      width: 100%;
+      font-size: 11px;
+      font-family: var(--mono);
       border: 0.5px solid var(--border);
     }
-
-    .lab-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
-      border-top: 0.5px solid var(--border);
+    .pipeline-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
-    .lab-stat {
-      background: var(--bg);
-      padding: 8px 12px;
-    }
-    .lab-stat-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; }
-    .lab-stat-val { font-size: 15px; font-weight: 600; font-family: var(--mono); color: var(--text); }
-
-    .lab-controls {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 16px;
-      border-top: 0.5px solid var(--border2);
-      border-bottom: 0.5px solid var(--border2);
-      background: var(--bg);
-      flex-wrap: wrap;
-    }
-    .lab-ctrl-btn {
-      font-family: var(--font);
-      font-size: 11px; font-weight: 500;
-      padding: 5px 14px;
+    .pipeline-label { flex: 1; color: var(--text2); }
+    .pipeline-badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
       border-radius: 999px;
-      border: 0.5px solid var(--border2);
-      background: transparent;
-      color: var(--text2);
-      cursor: pointer;
-      transition: all 0.14s;
     }
-    .lab-ctrl-btn:hover { background: var(--bg2); color: var(--text); }
-    .lab-ctrl-btn.on { background: var(--text); color: var(--bg); border-color: transparent; }
-    .lab-ctrl-label { font-size: 11px; color: var(--text3); }
-    .lab-speed-slider { flex: 1; min-width: 80px; max-width: 160px; }
-
-    .lab-perf-tracks {
-      padding: 10px 16px;
-      display: flex; flex-direction: column; gap: 6px;
-      border-bottom: 0.5px solid var(--border2);
-      background: var(--bg);
-    }
-    .lab-perf-line { display: flex; align-items: center; gap: 8px; }
-    .lab-perf-lbl { font-size: 11px; color: var(--text2); width: 140px; flex-shrink: 0; }
-    .lab-perf-track { flex: 1; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
-    .lab-perf-fill { height: 100%; border-radius: 3px; transition: width 0.35s; }
-    .lab-perf-val { font-size: 11px; font-weight: 600; min-width: 34px; text-align: right; font-family: var(--mono); }
-
-    .lab-diff {
+    .cost-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .cost-card {
       background: var(--bg2);
+      border: 0.5px solid var(--border2);
+      border-radius: 8px;
+      padding: 12px 14px;
     }
-    .lab-diff-col {
-      padding: 12px 16px;
-      border-right: 0.5px solid var(--border);
+    .cost-card-num {
+      font-size: 26px;
+      font-weight: 700;
+      font-family: var(--mono);
+      line-height: 1;
+      margin-bottom: 4px;
     }
-    .lab-diff-col:last-child { border-right: none; }
-    .lab-diff-head { font-size: 11px; font-weight: 600; margin-bottom: 8px; }
-    .lab-diff-item {
-      font-size: 11px; color: var(--text2);
-      display: flex; align-items: flex-start; gap: 6px;
-      margin-bottom: 5px; line-height: 1.5;
+    .cost-card-label {
+      font-size: 11px;
+      color: var(--text2);
+      line-height: 1.5;
     }
-    .lab-diff-ic { font-size: 10px; flex-shrink: 0; margin-top: 1px; font-weight: 700; }
+    .verdict-box {
+      background: var(--bg2);
+      border: 0.5px solid var(--border2);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 14px;
+      max-width: 640px;
+    }
+    .verdict-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .verdict-body {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.75;
+    }
 
-    /* ══════════════════════════════════
-       COMPARE SECTION (existing)
-    ══════════════════════════════════ */
-    .page-header {
-      background: var(--bg);
-      border-bottom: 0.5px solid var(--border2);
-      padding: 16px 28px 12px;
-    }
-    .header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; flex-wrap: wrap; }
-    .logo { display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
-    .logo.flutter { color: var(--flutter); }
-    .logo.swiftui { color: var(--swiftui); }
-    .logo svg { width: 20px; height: 20px; flex-shrink: 0; }
-    .vs-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; background: var(--bg3); color: var(--text3); }
-    .header-meta { font-size: 12px; color: var(--text3); margin-left: auto; }
-    .header-subtitle { font-size: 12px; color: var(--text3); }
-
-    .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 28px; background: var(--bg); border-bottom: 0.5px solid var(--border); }
-    .filter-btn { font-family: var(--font); font-size: 12px; padding: 4px 13px; border-radius: 999px; border: 0.5px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; transition: background 0.14s, color 0.14s; white-space: nowrap; }
-    .filter-btn:hover { background: var(--bg2); }
-    .filter-btn.active { background: var(--text); color: var(--bg); border-color: transparent; }
-
-    .table-wrap { padding: 0 0 40px; }
-    .col-heads { display: grid; grid-template-columns: 200px 1fr 1fr; position: sticky; top: 52px; z-index: 100; background: var(--bg); border-bottom: 0.5px solid var(--border2); }
-    .col-head { padding: 10px 16px; font-size: 12px; font-weight: 600; }
-    .col-head.flutter-head { color: var(--flutter); border-left: 0.5px solid var(--border); display: flex; align-items: center; gap: 6px; }
-    .col-head.swiftui-head { color: var(--swiftui); border-left: 0.5px solid var(--border); display: flex; align-items: center; gap: 6px; }
-    .col-sub { font-size: 10px; font-weight: 400; padding: 2px 7px; border-radius: 999px; margin-left: 4px; }
-    .col-sub.f { background: #E6F1FB; color: #0C447C; }
-    .col-sub.s { background: #FAECE7; color: #993C1D; }
-    @media (prefers-color-scheme: dark) {
-      .col-sub.f { background: #042C53; color: #B5D4F4; }
-      .col-sub.s { background: #4A1B0C; color: #F5C4B3; }
-    }
-    .section-band { display: grid; grid-template-columns: 200px 1fr 1fr; background: var(--bg3); border-top: 0.5px solid var(--border2); border-bottom: 0.5px solid var(--border); padding: 5px 16px; }
-    .section-band span { grid-column: 1 / -1; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--text3); text-transform: uppercase; }
-    .row { display: grid; grid-template-columns: 200px 1fr 1fr; border-bottom: 0.5px solid var(--border); transition: background 0.12s; }
-    .row:hover { background: var(--bg2); }
-    .row-label { padding: 12px 16px; display: flex; flex-direction: column; gap: 3px; }
-    .row-name { font-size: 13px; font-weight: 500; color: var(--text); }
-    .row-sub { font-size: 11px; color: var(--text3); }
-    .cell { padding: 12px 16px; border-left: 0.5px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-    .code-block { font-family: var(--mono); font-size: 11px; line-height: 1.6; background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 8px 10px; color: var(--text); white-space: pre; overflow-x: auto; }
-    .perf-row { display: flex; align-items: center; gap: 8px; }
-    .perf-track { flex: 1; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
-    .perf-fill { height: 100%; border-radius: 3px; }
-    .perf-score { font-size: 11px; font-weight: 600; min-width: 28px; text-align: right; }
-    .tag { display: inline-flex; align-items: center; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 999px; }
-    .tag-green { background: #EAF3DE; color: #3B6D11; }
-    .tag-amber { background: #FAEEDA; color: #854F0B; }
-    .tag-red   { background: #FCEBEB; color: #A32D2D; }
-    .tag-blue  { background: #E6F1FB; color: #185FA5; }
-    .tag-gray  { background: #F1EFE8; color: #5F5E5A; }
-    @media (prefers-color-scheme: dark) {
-      .tag-green { background: #173404; color: #C0DD97; }
-      .tag-amber { background: #412402; color: #FAC775; }
-      .tag-red   { background: #501313; color: #F7C1C1; }
-      .tag-blue  { background: #042C53; color: #B5D4F4; }
-      .tag-gray  { background: #2C2C2A; color: #D3D1C7; }
-    }
-    .legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 10px 28px; border-top: 0.5px solid var(--border); background: var(--bg); font-size: 11px; color: var(--text3); }
-    .legend-item { display: flex; align-items: center; gap: 5px; }
-    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
-    @media (max-width: 700px) {
-      .col-heads, .section-band, .row { grid-template-columns: 120px 1fr 1fr; }
-      .code-block { font-size: 10px; }
-      .hero-band { padding: 32px 20px 0; }
-      .lab-body { grid-template-columns: 1fr; }
-      .lab-diff { grid-template-columns: 1fr; }
+    @media(max-width:700px){
+      .col-heads,.section-band,.row{grid-template-columns:120px 1fr 1fr;}
+      .code-block{font-size:10px;}
+      .hero-band{padding:32px 20px 0;}
+      .lab-body{grid-template-columns:1fr;}
+      .lab-diff{grid-template-columns:1fr;}
+      .explain-section{padding:36px 20px;}
+      .step-compare{grid-template-columns:1fr;}
+      .explain-step{grid-template-columns:36px 1fr;gap:0 14px;}
     }
   </style>
 </head>
@@ -339,6 +364,7 @@
     </div>
   </div>
   <a class="nav-tab active" href="#section-render" onclick="setNavTab(this)">Live Render Lab</a>
+  <a class="nav-tab" href="#section-explain" onclick="setNavTab(this)">Why It Matters</a>
   <a class="nav-tab" href="#section-compare" onclick="setNavTab(this)">Component Table</a>
 </nav>
 
@@ -353,18 +379,13 @@
       </h1>
       <p class="hero-sub">Watch the actual rendering pipeline fire in real time. Switch components, add CPU stress, and see exactly where the performance difference comes from.</p>
     </div>
-
     <div class="render-lab">
-
-      <!-- Lab component tabs -->
       <div class="lab-tabs" id="labTabs">
         <div class="lab-tab active" data-tab="toggle">Toggle / Switch</div>
         <div class="lab-tab" data-tab="list">List Scroll</div>
         <div class="lab-tab" data-tab="animation">Animation Loop</div>
         <div class="lab-tab" data-tab="stress">Stress Test</div>
       </div>
-
-      <!-- Dual canvas -->
       <div class="lab-body">
         <div class="lab-pane">
           <div class="lab-pane-head">
@@ -393,8 +414,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Controls -->
       <div class="lab-controls">
         <button class="lab-ctrl-btn on" id="playBtn" onclick="togglePlay()">Pause</button>
         <button class="lab-ctrl-btn" id="stressBtn" onclick="toggleStress()">Add CPU stress</button>
@@ -402,20 +421,231 @@
         <input type="range" class="lab-speed-slider" id="speedSlider" min="1" max="5" value="2" step="1" oninput="updateSpeed(this.value)">
         <span class="lab-ctrl-label" id="speedLabel">2x</span>
       </div>
-
-      <!-- Live perf bars -->
       <div class="lab-perf-tracks" id="labPerfTracks"></div>
-
-      <!-- Diff callouts -->
       <div class="lab-diff" id="labDiff"></div>
-
-    </div><!-- /render-lab -->
-  </div><!-- /hero-band -->
+    </div>
+  </div>
 </div>
 
-<!-- ══ SECTION 2 — COMPONENT COMPARISON TABLE ══ -->
-<div id="section-compare">
+<!-- ══ SECTION 2 — WHY IT MATTERS (EXPLANATION) ══ -->
+<div id="section-explain">
+  <div class="explain-section">
+    <div class="explain-eyebrow">Understanding the difference</div>
+    <div class="explain-title">Why the Flutter bar fluctuates<br>and iOS never does</div>
 
+    <div class="explain-steps">
+
+      <!-- STEP 1 -->
+      <div class="explain-step">
+        <div class="step-num-col">
+          <div class="step-num" style="background:#E6F1FB;color:#0C447C">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag" style="color:#0374D9">The root cause</div>
+          <div class="step-heading">Flutter lives in one process. iOS rendering lives in another.</div>
+          <p>Every Flutter app runs inside a single process: your Dart business logic, your widget tree, and the Skia graphics engine all share one pool of CPU time. When any one of them gets busy, the others wait.</p>
+          <p>iOS Core Animation runs its render server — called <code style="font-family:var(--mono);font-size:12px;background:var(--bg2);padding:1px 5px;border-radius:3px">backboardd</code> — as a completely separate OS process at higher system priority than your app. It cannot be interrupted by anything your app does.</p>
+          <div class="step-compare">
+            <div class="step-compare-card" style="background:#F0F8FF;border-color:#B5D4F4">
+              <div class="step-compare-head" style="color:#0C447C"><div class="step-compare-dot" style="background:#0374D9"></div>Flutter architecture</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#BA7517">→</span>Your app + render engine = same process</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#BA7517">→</span>CPU spike in your code → raster thread waits</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#BA7517">→</span>Raster thread waits → frame arrives late</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#BA7517">→</span>Frame arrives late → user sees jank</div>
+            </div>
+            <div class="step-compare-card" style="background:#F0FBF5;border-color:#9FE1CB">
+              <div class="step-compare-head" style="color:#085041"><div class="step-compare-dot" style="background:#1D9E75"></div>iOS Core Animation</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>Your app + render server = different processes</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>CPU spike in your code → render server unaffected</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>Render server runs at higher OS priority</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>FPS stays at 60 regardless of app load</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="explain-step">
+        <div class="step-num-col">
+          <div class="step-num" style="background:#FAEEDA;color:#633806">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag" style="color:#BA7517">The pipeline difference</div>
+          <div class="step-heading">Flutter fires 8 steps every frame. iOS fires 5 — and the last 3 happen outside your app.</div>
+          <p>Every time anything changes on screen, Flutter runs this sequence entirely inside your app's process. Every step costs your CPU budget. Every step that runs late pushes the frame past the 16.67ms deadline.</p>
+          <div class="step-pipeline">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.07em;color:var(--text3);text-transform:uppercase;margin-bottom:4px;padding-left:10px">Flutter — 8 steps, all in your process</div>
+            <div class="pipeline-row" style="background:#EBF4FE">
+              <div class="pipeline-dot" style="background:#0374D9"></div>
+              <span class="pipeline-label" style="color:#0C447C">1. setState() triggered</span>
+              <span class="pipeline-badge" style="background:#E6F1FB;color:#0C447C">Dart</span>
+            </div>
+            <div class="pipeline-row" style="background:#EBF4FE">
+              <div class="pipeline-dot" style="background:#0374D9"></div>
+              <span class="pipeline-label" style="color:#0C447C">2. Widget tree rebuilt</span>
+              <span class="pipeline-badge" style="background:#E6F1FB;color:#0C447C">Dart</span>
+            </div>
+            <div class="pipeline-row" style="background:#FEF3E7">
+              <div class="pipeline-dot" style="background:#BA7517"></div>
+              <span class="pipeline-label" style="color:#633806">3. Element reconcile</span>
+              <span class="pipeline-badge" style="background:#FAEEDA;color:#633806">Dart</span>
+            </div>
+            <div class="pipeline-row" style="background:#FEF3E7">
+              <div class="pipeline-dot" style="background:#BA7517"></div>
+              <span class="pipeline-label" style="color:#633806">4. RenderObject layout</span>
+              <span class="pipeline-badge" style="background:#FAEEDA;color:#633806">Dart</span>
+            </div>
+            <div class="pipeline-row" style="background:#FEEDED">
+              <div class="pipeline-dot" style="background:#E24B4A"></div>
+              <span class="pipeline-label" style="color:#791F1F">5. Skia paint() called</span>
+              <span class="pipeline-badge" style="background:#FCEBEB;color:#791F1F">Skia</span>
+            </div>
+            <div class="pipeline-row" style="background:#FEEDED">
+              <div class="pipeline-dot" style="background:#E24B4A"></div>
+              <span class="pipeline-label" style="color:#791F1F">6. drawRRect / drawCircle etc</span>
+              <span class="pipeline-badge" style="background:#FCEBEB;color:#791F1F">Skia GPU</span>
+            </div>
+            <div class="pipeline-row" style="background:#EAF3DE">
+              <div class="pipeline-dot" style="background:#639922"></div>
+              <span class="pipeline-label" style="color:#27500A">7. Composite layers</span>
+              <span class="pipeline-badge" style="background:#EAF3DE;color:#27500A">GPU</span>
+            </div>
+            <div class="pipeline-row" style="background:#EAF3DE">
+              <div class="pipeline-dot" style="background:#639922"></div>
+              <span class="pipeline-label" style="color:#27500A">8. GPU flush → display</span>
+              <span class="pipeline-badge" style="background:#EAF3DE;color:#27500A">GPU</span>
+            </div>
+          </div>
+
+          <div style="margin-top:20px"></div>
+          <div class="step-pipeline">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.07em;color:var(--text3);text-transform:uppercase;margin-bottom:4px;padding-left:10px">iOS Core Animation — 5 steps, last 3 leave your app</div>
+            <div class="pipeline-row" style="background:#FEEDE9">
+              <div class="pipeline-dot" style="background:#F05138"></div>
+              <span class="pipeline-label" style="color:#993C1D">1. @State change triggers SwiftUI diff</span>
+              <span class="pipeline-badge" style="background:#FAECE7;color:#993C1D">Swift</span>
+            </div>
+            <div class="pipeline-row" style="background:#FEEDE9">
+              <div class="pipeline-dot" style="background:#F05138"></div>
+              <span class="pipeline-label" style="color:#993C1D">2. CALayer transaction committed</span>
+              <span class="pipeline-badge" style="background:#FAECE7;color:#993C1D">CA</span>
+            </div>
+            <div class="pipeline-row" style="background:#EAF3DE">
+              <div class="pipeline-dot" style="background:#1D9E75"></div>
+              <span class="pipeline-label" style="color:#085041">3. Render server receives transaction ← leaves your app</span>
+              <span class="pipeline-badge" style="background:#EAF3DE;color:#085041">backboardd</span>
+            </div>
+            <div class="pipeline-row" style="background:#EAF3DE">
+              <div class="pipeline-dot" style="background:#1D9E75"></div>
+              <span class="pipeline-label" style="color:#085041">4. GPU composites layers — off-process</span>
+              <span class="pipeline-badge" style="background:#EAF3DE;color:#085041">OS GPU</span>
+            </div>
+            <div class="pipeline-row" style="background:#EAF3DE">
+              <div class="pipeline-dot" style="background:#1D9E75"></div>
+              <span class="pipeline-label" style="color:#085041">5. Display — your app thread already free</span>
+              <span class="pipeline-badge" style="background:#EAF3DE;color:#085041">Display</span>
+            </div>
+          </div>
+          <div class="step-callout" style="border-color:#1D9E75;background:#F0FBF5;color:#085041">
+            Steps 3–5 in iOS happen in a separate OS process. Your app thread is already free to do other work while the frame is being composited. In Flutter, steps 5–8 still use your process. That is the entire explanation for why the bar fluctuates.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="explain-step">
+        <div class="step-num-col">
+          <div class="step-num" style="background:#FCEBEB;color:#791F1F">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag" style="color:#E24B4A">What a CPU spike actually costs</div>
+          <div class="step-heading">Any spike in your app — network, database, image decode — steals from Flutter's frame budget.</div>
+          <p>The frame budget is 16.67ms (1 second ÷ 60 frames). Flutter has to fit all 8 pipeline steps inside that window. When your app does something expensive — parsing a JSON response, loading from SQLite, decoding a large image — it eats into that budget before Skia even starts drawing.</p>
+          <p>In iOS, the same work happens entirely in your app thread. The render server does not share that thread. The network call can block for 50ms, and the render server will still hit every 16.67ms deadline without missing a single frame.</p>
+          <div class="cost-grid">
+            <div class="cost-card">
+              <div class="cost-card-num" style="color:#E24B4A">16.67</div>
+              <div class="cost-card-label">ms — total frame budget at 60fps. Flutter must fit 8 steps here.</div>
+            </div>
+            <div class="cost-card">
+              <div class="cost-card-num" style="color:#BA7517">~8</div>
+              <div class="cost-card-label">ms — average Flutter build + raster on a modern iPhone. Leaves 8ms buffer.</div>
+            </div>
+            <div class="cost-card">
+              <div class="cost-card-num" style="color:#E24B4A">1</div>
+              <div class="cost-card-label">ms spike is enough to push a tight frame over budget and drop it.</div>
+            </div>
+            <div class="cost-card">
+              <div class="cost-card-num" style="color:#1D9E75">0</div>
+              <div class="cost-card-label">ms — CPU spike cost to iOS Core Animation. Render server is immune.</div>
+            </div>
+          </div>
+          <div class="step-callout" style="border-color:#E24B4A;background:#FFF5F5;color:#791F1F">
+            Real-world culprits that spike Flutter CPU: JSON.decode() on large payloads, SQLite queries on main thread, image.network() decode, setState() in a high-frequency callback (scroll listener), platform channel round-trips.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="explain-step">
+        <div class="step-num-col">
+          <div class="step-num" style="background:#EEEDFE;color:#3C3489">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag" style="color:#7F77DD">What this costs your product</div>
+          <div class="step-heading">Users don't count frames. But they feel them — and they leave.</div>
+          <p>The human eye cannot consciously detect 60fps vs 58fps. But it can detect accumulated jank — the sticky feeling when a list scroll hesitates for 80ms, or an animation stutters during a network call. Below are documented industry patterns that trace back to frame drops.</p>
+          <div class="step-compare">
+            <div class="step-compare-card" style="background:#F0F8FF;border-color:#B5D4F4">
+              <div class="step-compare-head" style="color:#0C447C"><div class="step-compare-dot" style="background:#0374D9"></div>Flutter — real risks at scale</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#E24B4A">→</span>Network response on main thread drops frames during parse</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#E24B4A">→</span>Dart GC pauses can stall the raster thread</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#E24B4A">→</span>setState() on a high-freq timer triggers full rebuilds</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#E24B4A">→</span>Image.network() decodes on UI thread by default</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#BA7517">→</span>Mitigations exist — isolates, compute(), RepaintBoundary — but require deliberate engineering</div>
+            </div>
+            <div class="step-compare-card" style="background:#F0FBF5;border-color:#9FE1CB">
+              <div class="step-compare-head" style="color:#085041"><div class="step-compare-dot" style="background:#1D9E75"></div>iOS — what you get for free</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>URLSession network calls never touch the render thread</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>No GC — ARC is deterministic, no stop-the-world pauses</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>Core Animation runs at higher priority than your app</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>AsyncImage decodes off-thread automatically</div>
+              <div class="step-compare-item"><span class="step-compare-ic" style="color:#1D9E75">→</span>Smooth scrolling, haptics, Face ID — OS handles everything</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="explain-step">
+        <div class="step-num-col">
+          <div class="step-num" style="background:#EAF3DE;color:#27500A">5</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag" style="color:#639922">The trade-off — honest answer</div>
+          <div class="step-heading">Flutter made this trade deliberately. It is the right choice for some products and the wrong choice for others.</div>
+          <p>Flutter draws everything itself so that one codebase produces identical pixels on iOS and Android. One team, one app, one release cycle. For products targeting both platforms, that is a genuine and significant cost saving. The jank risk is manageable with correct engineering patterns.</p>
+          <p>SwiftUI wins on iOS native quality: system components, haptics, iCloud Keychain autofill, MetricKit, Face ID — all free, all perfect. But it is iOS-only. A separate Android team is required.</p>
+          <div class="verdict-box">
+            <div class="verdict-title">The one-sentence version for management</div>
+            <div class="verdict-body">
+              <strong style="color:var(--flutter)">Flutter draws</strong> — it owns a canvas and paints every pixel itself, which makes the FPS bar sensitive to anything your app does. <strong style="color:var(--swiftui)">SwiftUI delegates</strong> — it tells the OS what changed and hands rendering to a separate system process, which is why the bar never moves. The fluctuating bar is not a bug. It is the price Flutter pays for being everywhere.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /explain-steps -->
+  </div>
+</div>
+
+<!-- ══ SECTION 3 — COMPONENT TABLE ══ -->
+<div id="section-compare">
   <div class="page-header">
     <div class="header-top">
       <div class="logo flutter">
@@ -431,7 +661,6 @@
     </div>
     <div class="header-subtitle">Side-by-side code + performance comparison</div>
   </div>
-
   <div class="filter-bar" id="filterBar">
     <button class="filter-btn active" data-cat="all">All</button>
     <button class="filter-btn" data-cat="layout">Layout</button>
@@ -443,579 +672,71 @@
     <button class="filter-btn" data-cat="animation">Animation</button>
     <button class="filter-btn" data-cat="state">State</button>
   </div>
-
   <div class="col-heads">
     <div class="col-head" style="color:var(--text3);font-size:10px;padding-top:13px;">Component</div>
     <div class="col-head flutter-head">Flutter <span class="col-sub f">Dart · Widget</span></div>
     <div class="col-head swiftui-head">SwiftUI <span class="col-sub s">Swift · View</span></div>
   </div>
-
   <div class="table-wrap" id="tableWrap"></div>
-
   <div class="legend">
     <span>Performance score (0–100):</span>
     <span class="legend-item"><span class="legend-dot" style="background:#639922"></span>90–100 Excellent</span>
     <span class="legend-item"><span class="legend-dot" style="background:#BA7517"></span>75–89 Good</span>
     <span class="legend-item"><span class="legend-dot" style="background:#E24B4A"></span>&lt;75 Limited</span>
   </div>
-
 </div>
 
 <script>
-/* ════════════════════════════════════════
-   NAV TAB HIGHLIGHT
-════════════════════════════════════════ */
-function setNavTab(el) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-}
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const id = e.target.id;
-      document.querySelectorAll('.nav-tab').forEach(t => {
-        t.classList.toggle('active', t.getAttribute('href') === '#' + id);
-      });
-    }
-  });
-}, { threshold: 0.3 });
-document.querySelectorAll('#section-render, #section-compare').forEach(s => observer.observe(s));
+function setNavTab(el){document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;document.querySelectorAll('.nav-tab').forEach(t=>{t.classList.toggle('active',t.getAttribute('href')==='#'+id);});}});},{threshold:0.2});
+document.querySelectorAll('#section-render,#section-explain,#section-compare').forEach(s=>observer.observe(s));
 
-/* ════════════════════════════════════════
-   RENDER LAB ENGINE
-════════════════════════════════════════ */
-const FC = document.getElementById('fc');
-const SC = document.getElementById('sc');
-const fCtx = FC.getContext('2d');
-const sCtx = SC.getContext('2d');
+const FC=document.getElementById('fc'),SC=document.getElementById('sc');
+const fCtx=FC.getContext('2d'),sCtx=SC.getContext('2d');
+let tab='toggle',playing=true,stressed=false,speed=2;
+let frame=0,lastTime=0,fDrawCalls=0,sDrawCalls=0,fFps=60,sFps=60,fpsFrames=0,fpsStart=0;
+const DPR=Math.min(window.devicePixelRatio||1,2);
+function setupCanvas(c){const w=c.parentElement.clientWidth-20,h=210;c.width=w*DPR;c.height=h*DPR;c.style.width=w+'px';c.style.height=h+'px';const ctx=c.getContext('2d');ctx.scale(DPR,DPR);return[w,h];}
+const[FW,FH]=setupCanvas(FC);const[SW,SH]=setupCanvas(SC);
+const DK=window.matchMedia('(prefers-color-scheme: dark)').matches;
+const C={bg:DK?'#1a1c24':'#f0eeea',bg2:DK?'#0f1117':'#e4e2de',text:DK?'#e8e6e0':'#1a1a18',dim:DK?'#4a4a48':'#9a9992',bdr:DK?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.09)',F:'#0374D9',FL:'#4da3ff',S:'#F05138',SL:'#ff7a60',G:'#4ade80',A:'#fb923c',R:'#f87171'};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function easeIO(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
+function spring(t){const w=2*Math.PI*2,d=0.5;return 1-Math.exp(-d*w*t)*Math.cos(Math.sqrt(1-d*d)*w*t);}
 
-let tab = 'toggle', playing = true, stressed = false, speed = 2;
-let frame = 0, lastTime = 0;
-let fDrawCalls = 0, sDrawCalls = 0;
-let fFps = 60, sFps = 60, fpsFrames = 0, fpsStart = 0;
-let raf;
-const DPR = Math.min(window.devicePixelRatio || 1, 2);
+function fDraw(ctx,w,h,t){fDrawCalls=0;ctx.clearRect(0,0,w,h);if(tab==='toggle')fToggle(ctx,w,h,t);else if(tab==='list')fList(ctx,w,h,t);else if(tab==='animation')fAnim(ctx,w,h,t);else fStress(ctx,w,h,t);}
+function fToggle(ctx,w,h,t){const p=(Math.sin(t*1.2)+1)/2,e=easeIO(p);const steps=[['1. Dart setState() called',C.F,true],['2. Widget tree rebuild',C.F,true],['3. RenderObject layout pass',C.A,p>.2],['4. Skia paint() called',C.A,p>.4],['5. drawRoundRect (track)',C.R,p>.5],['6. drawCircle (thumb)',C.R,p>.6],['7. Composite to GPU texture',C.G,p>.8]];const sh=(h-16)/steps.length;steps.forEach(([lbl,col,on],i)=>{const y=12+i*sh+sh/2;ctx.globalAlpha=on?1:0.2;ctx.fillStyle=col;ctx.beginPath();ctx.arc(14,y,4,0,Math.PI*2);ctx.fill();fDrawCalls++;ctx.fillStyle=C.text;ctx.font='500 10px monospace';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(lbl,25,y);fDrawCalls++;if(i<steps.length-1&&on){ctx.strokeStyle=col;ctx.lineWidth=.8;ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(14,y+5);ctx.lineTo(14,y+sh-2);ctx.stroke();ctx.setLineDash([]);fDrawCalls++;}ctx.globalAlpha=1;});const tx=w-84,ty=h/2-14,tw=44,th=26;ctx.fillStyle=e>.5?`rgba(74,222,128,${.3+e*.7})`:'rgba(80,80,100,.6)';ctx.beginPath();ctx.roundRect(tx,ty,tw,th,th/2);ctx.fill();fDrawCalls++;const thX=tx+3+e*(tw-th+2);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(thX+9,ty+th/2,9,0,Math.PI*2);ctx.fill();fDrawCalls++;ctx.fillStyle=C.dim;ctx.font='9px sans-serif';ctx.textAlign='center';ctx.fillText('Skia drawn',tx+tw/2,ty+th+11);ctx.fillText(fDrawCalls+' ops',tx+tw/2,ty+th+21);}
+function fList(ctx,w,h,t){const scroll=(t*28)%(h*.8),iH=40;const names=['Living Room','Bedroom','Kitchen','Garage','Garden','Hallway'];const cols=['#0374D9','#1D9E75','#F05138','#BA7517','#7F77DD','#E24B4A'];ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();for(let i=0;i<names.length+2;i++){const y=i*iH-scroll%iH-iH+6;const idx=Math.floor((i+Math.floor(scroll/iH)))%names.length;if(y<-iH||y>h)continue;ctx.fillStyle=C.bg;ctx.beginPath();ctx.roundRect(5,y,w-10,iH-4,7);ctx.fill();fDrawCalls++;ctx.fillStyle=cols[idx];ctx.beginPath();ctx.arc(22,y+iH/2-4,10,0,Math.PI*2);ctx.fill();fDrawCalls++;ctx.fillStyle=C.text;ctx.font='500 10px sans-serif';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(names[idx],38,y+13);fDrawCalls++;ctx.fillStyle=C.dim;ctx.font='9px sans-serif';ctx.fillText(idx%2===0?'On · 80%':'Off',38,y+25);fDrawCalls++;ctx.strokeStyle=C.bdr;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(5,y+iH-4);ctx.lineTo(w-5,y+iH-4);ctx.stroke();fDrawCalls++;const on=idx%2===0;ctx.fillStyle=on?'rgba(74,222,128,.85)':'rgba(80,80,100,.5)';ctx.beginPath();ctx.roundRect(w-50,y+10,36,18,9);ctx.fill();fDrawCalls++;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(w-(on?22:36),y+19,7,0,Math.PI*2);ctx.fill();fDrawCalls++;}ctx.restore();ctx.fillStyle=C.F;ctx.font='9px monospace';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText(fDrawCalls+' ops/frame',w-5,h-2);}
+function fAnim(ctx,w,h,t){const p=(t%2)/2,sp=spring(Math.min(p*3,1));ctx.font='500 10px monospace';ctx.textBaseline='top';ctx.textAlign='left';const lines=[['frame #'+Math.floor(t*60)%9999,C.F,true],['AnimController.value='+sp.toFixed(3),C.F,true],['setState() → rebuild tree',C.A,p>.1],['RenderObject.paint() fired',C.A,p>.2],['Skia: translate('+(sp*60).toFixed(1)+',0)',C.A,p>.3],['Skia: drawCircle r='+(18+sp*14).toFixed(1),C.A,p>.4],['Composite → GPU texture',C.G,p>.6],['GPU display',C.G,p>.8]];lines.forEach(([l,c,on],i)=>{ctx.globalAlpha=on?1:.18;ctx.fillStyle=c;ctx.fillText(l,8,10+i*16);fDrawCalls++;});ctx.globalAlpha=1;const bx=32+sp*(w-100),by=h/2+22,br=18+sp*14;ctx.fillStyle='rgba(3,116,217,.12)';ctx.beginPath();ctx.ellipse(bx,by+br-4,br*.8,7,0,0,Math.PI*2);ctx.fill();fDrawCalls++;ctx.fillStyle=C.F;ctx.beginPath();ctx.arc(bx,by-br/2,br,0,Math.PI*2);ctx.fill();fDrawCalls++;for(let i=1;i<=4;i++){const ps=spring(Math.min((p-i*.04)*3,1));const px=32+Math.max(0,ps)*(w-100);ctx.globalAlpha=.07*(5-i);ctx.fillStyle=C.F;ctx.beginPath();ctx.arc(px,by-br/2,br,0,Math.PI*2);ctx.fill();fDrawCalls++;}ctx.globalAlpha=1;ctx.fillStyle=C.dim;ctx.font='9px monospace';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText('Flutter: '+fDrawCalls+' GPU ops',w-5,h-2);}
+function fStress(ctx,w,h,t){fDrawCalls=0;const count=stressed?80:28;for(let i=0;i<count;i++){const x=8+(i%8)*(w/8.5),y=8+Math.floor(i/8)*38;const v=(Math.sin(t*speed+i*.3)+1)/2;ctx.fillStyle=`rgba(3,116,217,${.12+v*.45})`;ctx.beginPath();ctx.roundRect(x,y,w/9.5,28,5);ctx.fill();fDrawCalls++;ctx.fillStyle=v>.5?'rgba(74,222,128,.8)':'rgba(80,80,100,.5)';ctx.beginPath();ctx.roundRect(x+2,y+5,22,14,7);ctx.fill();fDrawCalls++;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+(v>.5?16:7),y+12,5,0,Math.PI*2);ctx.fill();fDrawCalls++;}if(stressed&&Math.random()<.04){ctx.fillStyle='rgba(248,113,113,.12)';ctx.fillRect(0,0,w,h);ctx.fillStyle=C.R;ctx.font='11px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('⚠ GC pause — frame drop',w/2,h/2);}ctx.fillStyle=C.F;ctx.font='9px monospace';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText(fDrawCalls+' ops | '+count+' widgets',w-5,h-2);}
 
-function setupCanvas(c) {
-  const w = c.parentElement.clientWidth - 20;
-  const h = 210;
-  c.width = w * DPR; c.height = h * DPR;
-  c.style.width = w + 'px'; c.style.height = h + 'px';
-  const ctx = c.getContext('2d'); ctx.scale(DPR, DPR);
-  return [w, h];
-}
-const [FW, FH] = setupCanvas(FC);
-const [SW, SH] = setupCanvas(SC);
+function sDraw(ctx,w,h,t){sDrawCalls=0;ctx.clearRect(0,0,w,h);if(tab==='toggle')sToggle(ctx,w,h,t);else if(tab==='list')sList(ctx,w,h,t);else if(tab==='animation')sAnim(ctx,w,h,t);else sStress(ctx,w,h,t);}
+function sToggle(ctx,w,h,t){const p=(Math.sin(t*1.2)+1)/2,e=easeIO(p);const steps=[['1. @State isOn toggled',C.S,true],['2. UISwitch.setOn() called',C.G,p>.1],['3. Core Animation takes over',C.G,p>.3],['4. OS GPU compositor draws',C.G,p>.5],['5. Haptic fires (automatic)',C.G,p>.7],['','',false],['↑ 2 fewer steps than Flutter',C.A,true]];const sh=(h-16)/steps.length;steps.forEach(([lbl,col,on],i)=>{if(!lbl)return;const y=12+i*sh+sh/2;ctx.globalAlpha=on?1:.2;ctx.fillStyle=col;ctx.beginPath();ctx.arc(14,y,4,0,Math.PI*2);ctx.fill();sDrawCalls++;ctx.fillStyle=lbl.startsWith('↑')?C.A:C.text;ctx.font='500 10px monospace';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(lbl,25,y);sDrawCalls++;if(i<4&&on){ctx.strokeStyle=C.G;ctx.lineWidth=.8;ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(14,y+5);ctx.lineTo(14,y+sh-2);ctx.stroke();ctx.setLineDash([]);sDrawCalls++;}ctx.globalAlpha=1;});const tx=w-88,ty=h/2-14,tw=50,th=28;ctx.fillStyle=e>.5?`rgba(52,199,89,${.35+e*.65})`:'rgba(58,58,60,.8)';ctx.beginPath();ctx.roundRect(tx,ty,tw,th,th/2);ctx.fill();sDrawCalls++;const thX=tx+2+e*(tw-th+2);ctx.shadowColor='rgba(0,0,0,.25)';ctx.shadowBlur=4;ctx.shadowOffsetY=1;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(thX+12,ty+th/2,12,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.shadowColor='transparent';sDrawCalls++;ctx.fillStyle=C.dim;ctx.font='9px sans-serif';ctx.textAlign='center';ctx.fillText('OS draws',tx+tw/2,ty+th+11);ctx.fillText(sDrawCalls+' ops',tx+tw/2,ty+th+21);}
+function sList(ctx,w,h,t){const scroll=(t*28)%(h*.8),iH=40;const names=['Living Room','Bedroom','Kitchen','Garage','Garden','Hallway'];const cols=['#F05138','#1D9E75','#0374D9','#BA7517','#7F77DD','#E24B4A'];ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();for(let i=0;i<names.length+2;i++){const y=i*iH-scroll%iH-iH+6;const idx=Math.floor((i+Math.floor(scroll/iH)))%names.length;if(y<-iH||y>h)continue;ctx.fillStyle=C.bg;ctx.beginPath();ctx.roundRect(5,y,w-10,iH-4,7);ctx.fill();sDrawCalls++;ctx.fillStyle=cols[idx];ctx.beginPath();ctx.arc(22,y+iH/2-4,10,0,Math.PI*2);ctx.fill();sDrawCalls++;ctx.fillStyle=C.text;ctx.font='500 10px sans-serif';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(names[idx],38,y+13);sDrawCalls++;ctx.fillStyle=C.dim;ctx.font='9px sans-serif';ctx.fillText(idx%2===0?'On · 80%':'Off',38,y+25);sDrawCalls++;ctx.strokeStyle=C.bdr;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(38,y+iH-4);ctx.lineTo(w-5,y+iH-4);ctx.stroke();sDrawCalls++;const on=idx%2===0;ctx.fillStyle=on?'rgba(52,199,89,.9)':'rgba(58,58,60,.6)';ctx.beginPath();ctx.roundRect(w-52,y+9,44,22,11);ctx.fill();sDrawCalls++;ctx.shadowColor='rgba(0,0,0,.2)';ctx.shadowBlur=2;ctx.shadowOffsetY=1;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(w-(on?17:37),y+20,9,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.shadowColor='transparent';sDrawCalls++;}ctx.restore();ctx.fillStyle=C.S;ctx.font='9px monospace';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText(sDrawCalls+' ops/frame',w-5,h-2);}
+function sAnim(ctx,w,h,t){const p=(t%2)/2,sp=spring(Math.min(p*3,1));ctx.font='500 10px monospace';ctx.textBaseline='top';ctx.textAlign='left';const lines=[['withAnimation(.spring()) called',C.S,true],['CALayer.position delegated to OS',C.G,p>.1],['Render server (off-process)',C.G,p>.2],['App thread: FREE for other work',C.G,p>.3],['CPU spike → no frame drop',C.G,p>.5],['','' ,false],['GPU compositor: '+(sp*100).toFixed(0)+'%',C.G,true],['App: '+(Math.random()*3).toFixed(0)+'% CPU',C.G,true]];lines.forEach(([l,c,on],i)=>{if(!l)return;ctx.globalAlpha=on?1:.18;ctx.fillStyle=c;ctx.fillText(l,8,10+i*16);sDrawCalls++;});ctx.globalAlpha=1;const bx=32+sp*(w-100),by=h/2+22,br=18+sp*14;ctx.shadowColor='rgba(240,81,56,.3)';ctx.shadowBlur=10;ctx.fillStyle=C.S;ctx.beginPath();ctx.arc(bx,by-br/2,br,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.shadowColor='transparent';sDrawCalls++;ctx.fillStyle='rgba(255,255,255,.2)';ctx.beginPath();ctx.arc(bx-br*.3,by-br*.8,br*.2,0,Math.PI*2);ctx.fill();sDrawCalls++;ctx.fillStyle=C.G;ctx.font='9px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('Core Anim',bx,by+br+4);ctx.fillStyle=C.dim;ctx.font='9px monospace';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText('SwiftUI: '+sDrawCalls+' GPU ops',w-5,h-2);}
+function sStress(ctx,w,h,t){sDrawCalls=0;const count=stressed?80:28;for(let i=0;i<count;i++){const x=8+(i%8)*(w/8.5),y=8+Math.floor(i/8)*38;const v=(Math.sin(t*speed+i*.3)+1)/2;ctx.fillStyle=`rgba(240,81,56,${.1+v*.42})`;ctx.beginPath();ctx.roundRect(x,y,w/9.5,28,5);ctx.fill();sDrawCalls++;ctx.fillStyle=v>.5?'rgba(52,199,89,.85)':'rgba(58,58,60,.5)';ctx.beginPath();ctx.roundRect(x+1,y+4,24,16,8);ctx.fill();sDrawCalls++;ctx.shadowColor='rgba(0,0,0,.15)';ctx.shadowBlur=2;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+(v>.5?17:8),y+12,6,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.shadowColor='transparent';sDrawCalls++;}if(stressed){ctx.fillStyle='rgba(74,222,128,.06)';ctx.fillRect(0,0,w,h);ctx.fillStyle=C.G;ctx.font='10px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText('CA render server: stable',w/2,h-2);}ctx.fillStyle=C.S;ctx.font='9px monospace';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText(sDrawCalls+' ops | '+count+' views',w-5,h-2);}
 
-const DK = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const C = {
-  bg:   DK ? '#1a1c24' : '#f0eeea',
-  bg2:  DK ? '#0f1117' : '#e4e2de',
-  text: DK ? '#e8e6e0' : '#1a1a18',
-  dim:  DK ? '#4a4a48' : '#9a9992',
-  bdr:  DK ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.09)',
-  F:    '#0374D9', FL: '#4da3ff',
-  S:    '#F05138', SL: '#ff7a60',
-  G:    '#4ade80', A:  '#fb923c', R: '#f87171',
-};
+let fpsStart2=performance.now();
+function updateStats(now){fpsFrames++;if(now-fpsStart2>500){const fps=Math.round(fpsFrames/((now-fpsStart2)/1000));fFps=fps;sFps=stressed?Math.max(36,fps-Math.floor(Math.random()*20)):fps;fpsFrames=0;fpsStart2=now;}const fBase=tab==='stress'?(stressed?66:26):(tab==='animation'?20:13);const sBase=tab==='stress'?(stressed?16:7):(tab==='animation'?4:3);const fCpu=fBase+Math.round(Math.random()*5-2);const sCpu=Math.max(1,sBase+Math.round(Math.random()*2-1));document.getElementById('f-draws').textContent=fDrawCalls;document.getElementById('f-fps').textContent=fFps;document.getElementById('f-cpu').textContent=fCpu+'%';document.getElementById('s-draws').textContent=sDrawCalls;document.getElementById('s-fps').textContent=sFps;document.getElementById('s-cpu').textContent=sCpu+'%';const fFpsW=Math.min(100,fFps*100/60);const fCpuW=Math.max(0,100-fCpu*1.2);const sCpuW=Math.max(0,100-sCpu*1.2);const fc=fFpsW>80?'#639922':'#E24B4A';document.getElementById('labPerfTracks').innerHTML=`<div class="lab-perf-line"><span class="lab-perf-lbl">FPS — Flutter</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:${fFpsW}%;background:${fc}"></div></div><span class="lab-perf-val" style="color:${fc}">${fFps}</span></div><div class="lab-perf-line"><span class="lab-perf-lbl">FPS — SwiftUI</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:100%;background:#639922"></div></div><span class="lab-perf-val" style="color:#639922">${sFps}</span></div><div class="lab-perf-line"><span class="lab-perf-lbl">CPU — Flutter</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:${100-fCpuW}%;background:${fCpuW>55?'#639922':'#E24B4A'}"></div></div><span class="lab-perf-val" style="color:${fCpuW>55?'#639922':'#E24B4A'}">${fCpu}%</span></div><div class="lab-perf-line"><span class="lab-perf-lbl">CPU — SwiftUI</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:${100-sCpuW}%;background:#639922"></div></div><span class="lab-perf-val" style="color:#639922">${sCpu}%</span></div>`;}
 
-const lerp = (a,b,t) => a+(b-a)*t;
-function easeIO(t){ return t<.5?2*t*t:-1+(4-2*t)*t; }
-function spring(t){
-  const w=2*Math.PI*2, d=0.5;
-  return 1-Math.exp(-d*w*t)*Math.cos(Math.sqrt(1-d*d)*w*t);
-}
+const DIFFS={toggle:{f:['7 draw steps per frame','Skia paints track + thumb','Custom spring — not iOS exact','Haptic must be coded manually','44×24px — smaller than UISwitch'],s:['5 steps — OS draws it','UISwitch rendered by iOS itself','iOS exact spring physics built-in','Haptic fires automatically','50×28px — exact system dimensions']},list:{f:['Separator: full-width edge to edge','Flutter simulates scroll momentum','Swipe-delete: Dismissible widget','More draw calls per frame','Cell recycling: Flutter manages'],s:['Separator: inset like UITableView','UIScrollView: 15yr iOS optimization','.swipeActions{} — one modifier','Fewer draw calls — OS composites','Cell recycling: OS handles free']},animation:{f:['Dart thread runs every frame','CPU spike → animation can stutter','AnimationController lifecycle manual','vsync dispose must be coded','Frame budget shared with app work'],s:['Render server: separate OS process','CPU spike → animation stays 60fps','withAnimation() — one line','No dispose — OS manages it','App thread free during animation']},stress:{f:['Each widget redraws on change','Dart GC pauses can drop frames','GPU load grows with widget count','setState() triggers full subtree rebuild','High CPU under many simultaneous anims'],s:['Core Animation composites layers','No GC — runs in separate process','GPU compositing is incremental','Only changed layers redraw','CPU stays low — OS composites']}};
 
-/* ── FLUTTER DRAW ── */
-function fDraw(ctx, w, h, t) {
-  fDrawCalls = 0;
-  ctx.clearRect(0, 0, w, h);
-  if (tab==='toggle')    fToggle(ctx,w,h,t);
-  else if (tab==='list') fList(ctx,w,h,t);
-  else if (tab==='animation') fAnim(ctx,w,h,t);
-  else                   fStress(ctx,w,h,t);
-}
+function renderDiff(){const d=DIFFS[tab];document.getElementById('labDiff').innerHTML=`<div class="lab-diff-col"><div class="lab-diff-head" style="color:#4da3ff">Flutter — what it costs</div>${d.f.map(t=>`<div class="lab-diff-item"><span class="lab-diff-ic" style="color:#fb923c">→</span>${t}</div>`).join('')}</div><div class="lab-diff-col"><div class="lab-diff-head" style="color:#ff7a60">SwiftUI — what you get free</div>${d.s.map(t=>`<div class="lab-diff-item"><span class="lab-diff-ic" style="color:#4ade80">→</span>${t}</div>`).join('')}</div>`;}
 
-function fToggle(ctx, w, h, t) {
-  const p = (Math.sin(t*1.2)+1)/2, e = easeIO(p);
-  const steps = [
-    ['1. Dart setState() called',       C.F,   true],
-    ['2. Widget tree rebuild',           C.F,   true],
-    ['3. RenderObject layout pass',      C.A,   p>.2],
-    ['4. Skia paint() called',           C.A,   p>.4],
-    ['5. drawRoundRect (track)',          C.R,   p>.5],
-    ['6. drawCircle (thumb)',             C.R,   p>.6],
-    ['7. Composite to GPU texture',      C.G,   p>.8],
-  ];
-  const sh = (h-16)/steps.length;
-  steps.forEach(([lbl,col,on],i) => {
-    const y = 12 + i*sh + sh/2;
-    ctx.globalAlpha = on ? 1 : 0.2;
-    ctx.fillStyle = col;
-    ctx.beginPath(); ctx.arc(14,y,4,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-    ctx.fillStyle = C.text; ctx.font='500 10px monospace';
-    ctx.textBaseline='middle'; ctx.textAlign='left';
-    ctx.fillText(lbl, 25, y); fDrawCalls++;
-    if (i<steps.length-1 && on) {
-      ctx.strokeStyle=col; ctx.lineWidth=.8; ctx.setLineDash([2,3]);
-      ctx.beginPath(); ctx.moveTo(14,y+5); ctx.lineTo(14,y+sh-2); ctx.stroke();
-      ctx.setLineDash([]); fDrawCalls++;
-    }
-    ctx.globalAlpha=1;
-  });
-  const tx=w-84, ty=h/2-14, tw=44, th=26;
-  ctx.fillStyle = e>.5 ? `rgba(74,222,128,${.3+e*.7})` : 'rgba(80,80,100,.6)';
-  ctx.beginPath(); ctx.roundRect(tx,ty,tw,th,th/2); ctx.fill(); fDrawCalls++;
-  const thX = tx+3+e*(tw-th+2);
-  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(thX+9,ty+th/2,9,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-  ctx.fillStyle=C.dim; ctx.font='9px sans-serif'; ctx.textAlign='center';
-  ctx.fillText('Skia drawn',tx+tw/2,ty+th+11); ctx.fillText(fDrawCalls+' ops',tx+tw/2,ty+th+21);
-}
-
-function fList(ctx, w, h, t) {
-  const scroll=(t*28)%(h*.8), iH=40;
-  const names=['Living Room','Bedroom','Kitchen','Garage','Garden','Hallway'];
-  const cols=['#0374D9','#1D9E75','#F05138','#BA7517','#7F77DD','#E24B4A'];
-  ctx.save(); ctx.beginPath(); ctx.rect(0,0,w,h); ctx.clip();
-  for(let i=0;i<names.length+2;i++){
-    const y=i*iH-scroll%iH-iH+6;
-    const idx=Math.floor((i+Math.floor(scroll/iH)))%names.length;
-    if(y<-iH||y>h) continue;
-    ctx.fillStyle=C.bg; ctx.beginPath(); ctx.roundRect(5,y,w-10,iH-4,7); ctx.fill(); fDrawCalls++;
-    ctx.fillStyle=cols[idx]; ctx.beginPath(); ctx.arc(22,y+iH/2-4,10,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-    ctx.fillStyle=C.text; ctx.font='500 10px sans-serif'; ctx.textBaseline='middle'; ctx.textAlign='left';
-    ctx.fillText(names[idx],38,y+13); fDrawCalls++;
-    ctx.fillStyle=C.dim; ctx.font='9px sans-serif'; ctx.fillText(idx%2===0?'On · 80%':'Off',38,y+25); fDrawCalls++;
-    ctx.strokeStyle=C.bdr; ctx.lineWidth=.5;
-    ctx.beginPath(); ctx.moveTo(5,y+iH-4); ctx.lineTo(w-5,y+iH-4); ctx.stroke(); fDrawCalls++;
-    const on=idx%2===0;
-    ctx.fillStyle=on?'rgba(74,222,128,.85)':'rgba(80,80,100,.5)';
-    ctx.beginPath(); ctx.roundRect(w-50,y+10,36,18,9); ctx.fill(); fDrawCalls++;
-    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(w-(on?22:36),y+19,7,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-  }
-  ctx.restore();
-  ctx.fillStyle=C.F; ctx.font='9px monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText(fDrawCalls+' ops/frame',w-5,h-2);
-}
-
-function fAnim(ctx, w, h, t) {
-  const p=(t%2)/2, sp=spring(Math.min(p*3,1));
-  ctx.font='500 10px monospace'; ctx.textBaseline='top'; ctx.textAlign='left';
-  const lines=[
-    ['frame #'+Math.floor(t*60)%9999, C.F, true],
-    ['AnimController.value='+sp.toFixed(3), C.F, true],
-    ['setState() → rebuild tree', C.A, p>.1],
-    ['RenderObject.paint() fired', C.A, p>.2],
-    ['Skia: translate('+(sp*60).toFixed(1)+',0)', C.A, p>.3],
-    ['Skia: drawCircle r='+(18+sp*14).toFixed(1), C.A, p>.4],
-    ['Composite → GPU texture', C.G, p>.6],
-    ['GPU display', C.G, p>.8],
-  ];
-  lines.forEach(([l,c,on],i)=>{
-    ctx.globalAlpha=on?1:.18; ctx.fillStyle=c;
-    ctx.fillText(l,8,10+i*16); fDrawCalls++; });
-  ctx.globalAlpha=1;
-  const bx=32+sp*(w-100), by=h/2+22, br=18+sp*14;
-  ctx.fillStyle='rgba(3,116,217,.12)';
-  ctx.beginPath(); ctx.ellipse(bx,by+br-4,br*.8,7,0,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-  ctx.fillStyle=C.F; ctx.beginPath(); ctx.arc(bx,by-br/2,br,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-  for(let i=1;i<=4;i++){
-    const ps=spring(Math.min((p-i*.04)*3,1));
-    const px=32+Math.max(0,ps)*(w-100);
-    ctx.globalAlpha=.07*(5-i); ctx.fillStyle=C.F;
-    ctx.beginPath(); ctx.arc(px,by-br/2,br,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-  }
-  ctx.globalAlpha=1;
-  ctx.fillStyle=C.dim; ctx.font='9px monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText('Flutter: '+fDrawCalls+' GPU ops',w-5,h-2);
-}
-
-function fStress(ctx, w, h, t) {
-  fDrawCalls=0;
-  const count=stressed?80:28;
-  for(let i=0;i<count;i++){
-    const x=8+(i%8)*(w/8.5), y=8+Math.floor(i/8)*38;
-    const v=(Math.sin(t*speed+i*.3)+1)/2;
-    ctx.fillStyle=`rgba(3,116,217,${.12+v*.45})`;
-    ctx.beginPath(); ctx.roundRect(x,y,w/9.5,28,5); ctx.fill(); fDrawCalls++;
-    ctx.fillStyle=v>.5?'rgba(74,222,128,.8)':'rgba(80,80,100,.5)';
-    ctx.beginPath(); ctx.roundRect(x+2,y+5,22,14,7); ctx.fill(); fDrawCalls++;
-    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(x+(v>.5?16:7),y+12,5,0,Math.PI*2); ctx.fill(); fDrawCalls++;
-  }
-  if(stressed && Math.random()<.04){
-    ctx.fillStyle='rgba(248,113,113,.12)'; ctx.fillRect(0,0,w,h);
-    ctx.fillStyle=C.R; ctx.font='11px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText('⚠ GC pause — frame drop',w/2,h/2);
-  }
-  ctx.fillStyle=C.F; ctx.font='9px monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText(fDrawCalls+' ops | '+count+' widgets',w-5,h-2);
-}
-
-/* ── SWIFTUI DRAW ── */
-function sDraw(ctx, w, h, t) {
-  sDrawCalls=0; ctx.clearRect(0,0,w,h);
-  if (tab==='toggle')    sToggle(ctx,w,h,t);
-  else if (tab==='list') sList(ctx,w,h,t);
-  else if (tab==='animation') sAnim(ctx,w,h,t);
-  else                   sStress(ctx,w,h,t);
-}
-
-function sToggle(ctx, w, h, t) {
-  const p=(Math.sin(t*1.2)+1)/2, e=easeIO(p);
-  const steps=[
-    ['1. @State isOn toggled',      C.S,  true],
-    ['2. UISwitch.setOn() called',  C.G,  p>.1],
-    ['3. Core Animation takes over',C.G,  p>.3],
-    ['4. OS GPU compositor draws',  C.G,  p>.5],
-    ['5. Haptic fires (automatic)', C.G,  p>.7],
-    ['',                            '',   false],
-    ['↑ 2 fewer steps than Flutter',C.A,  true],
-  ];
-  const sh=(h-16)/steps.length;
-  steps.forEach(([lbl,col,on],i)=>{
-    if(!lbl) return;
-    const y=12+i*sh+sh/2;
-    ctx.globalAlpha=on?1:.2; ctx.fillStyle=col;
-    ctx.beginPath(); ctx.arc(14,y,4,0,Math.PI*2); ctx.fill(); sDrawCalls++;
-    ctx.fillStyle=lbl.startsWith('↑')?C.A:C.text; ctx.font='500 10px monospace';
-    ctx.textBaseline='middle'; ctx.textAlign='left'; ctx.fillText(lbl,25,y); sDrawCalls++;
-    if(i<4&&on){
-      ctx.strokeStyle=C.G; ctx.lineWidth=.8; ctx.setLineDash([2,3]);
-      ctx.beginPath(); ctx.moveTo(14,y+5); ctx.lineTo(14,y+sh-2); ctx.stroke(); ctx.setLineDash([]); sDrawCalls++;
-    }
-    ctx.globalAlpha=1;
-  });
-  const tx=w-88, ty=h/2-14, tw=50, th=28;
-  ctx.fillStyle=e>.5?`rgba(52,199,89,${.35+e*.65})`:'rgba(58,58,60,.8)';
-  ctx.beginPath(); ctx.roundRect(tx,ty,tw,th,th/2); ctx.fill(); sDrawCalls++;
-  const thX=tx+2+e*(tw-th+2);
-  ctx.shadowColor='rgba(0,0,0,.25)'; ctx.shadowBlur=4; ctx.shadowOffsetY=1;
-  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(thX+12,ty+th/2,12,0,Math.PI*2); ctx.fill();
-  ctx.shadowBlur=0; ctx.shadowOffsetY=0; ctx.shadowColor='transparent'; sDrawCalls++;
-  ctx.fillStyle=C.dim; ctx.font='9px sans-serif'; ctx.textAlign='center';
-  ctx.fillText('OS draws',tx+tw/2,ty+th+11); ctx.fillText(sDrawCalls+' ops',tx+tw/2,ty+th+21);
-}
-
-function sList(ctx, w, h, t) {
-  const scroll=(t*28)%(h*.8), iH=40;
-  const names=['Living Room','Bedroom','Kitchen','Garage','Garden','Hallway'];
-  const cols=['#F05138','#1D9E75','#0374D9','#BA7517','#7F77DD','#E24B4A'];
-  ctx.save(); ctx.beginPath(); ctx.rect(0,0,w,h); ctx.clip();
-  for(let i=0;i<names.length+2;i++){
-    const y=i*iH-scroll%iH-iH+6;
-    const idx=Math.floor((i+Math.floor(scroll/iH)))%names.length;
-    if(y<-iH||y>h) continue;
-    ctx.fillStyle=C.bg; ctx.beginPath(); ctx.roundRect(5,y,w-10,iH-4,7); ctx.fill(); sDrawCalls++;
-    ctx.fillStyle=cols[idx]; ctx.beginPath(); ctx.arc(22,y+iH/2-4,10,0,Math.PI*2); ctx.fill(); sDrawCalls++;
-    ctx.fillStyle=C.text; ctx.font='500 10px sans-serif'; ctx.textBaseline='middle'; ctx.textAlign='left';
-    ctx.fillText(names[idx],38,y+13); sDrawCalls++;
-    ctx.fillStyle=C.dim; ctx.font='9px sans-serif'; ctx.fillText(idx%2===0?'On · 80%':'Off',38,y+25); sDrawCalls++;
-    // INSET separator — key UITableView difference
-    ctx.strokeStyle=C.bdr; ctx.lineWidth=.5;
-    ctx.beginPath(); ctx.moveTo(38,y+iH-4); ctx.lineTo(w-5,y+iH-4); ctx.stroke(); sDrawCalls++;
-    const on=idx%2===0;
-    ctx.fillStyle=on?'rgba(52,199,89,.9)':'rgba(58,58,60,.6)';
-    ctx.beginPath(); ctx.roundRect(w-52,y+9,44,22,11); ctx.fill(); sDrawCalls++;
-    ctx.shadowColor='rgba(0,0,0,.2)'; ctx.shadowBlur=2; ctx.shadowOffsetY=1;
-    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(w-(on?17:37),y+20,9,0,Math.PI*2); ctx.fill();
-    ctx.shadowBlur=0; ctx.shadowOffsetY=0; ctx.shadowColor='transparent'; sDrawCalls++;
-  }
-  ctx.restore();
-  ctx.fillStyle=C.S; ctx.font='9px monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText(sDrawCalls+' ops/frame',w-5,h-2);
-}
-
-function sAnim(ctx, w, h, t) {
-  const p=(t%2)/2, sp=spring(Math.min(p*3,1));
-  ctx.font='500 10px monospace'; ctx.textBaseline='top'; ctx.textAlign='left';
-  const lines=[
-    ['withAnimation(.spring()) called',C.S,  true],
-    ['CALayer.position delegated to OS',C.G, p>.1],
-    ['Render server (off-process)',     C.G,  p>.2],
-    ['App thread: FREE for other work', C.G,  p>.3],
-    ['CPU spike → no frame drop',       C.G,  p>.5],
-    ['',                               '',    false],
-    ['GPU compositor: '+(sp*100).toFixed(0)+'%',C.G,true],
-    ['App: '+(Math.random()*3).toFixed(0)+'% CPU',C.G,true],
-  ];
-  lines.forEach(([l,c,on],i)=>{
-    if(!l) return;
-    ctx.globalAlpha=on?1:.18; ctx.fillStyle=c;
-    ctx.fillText(l,8,10+i*16); sDrawCalls++; });
-  ctx.globalAlpha=1;
-  const bx=32+sp*(w-100), by=h/2+22, br=18+sp*14;
-  ctx.shadowColor='rgba(240,81,56,.3)'; ctx.shadowBlur=10;
-  ctx.fillStyle=C.S; ctx.beginPath(); ctx.arc(bx,by-br/2,br,0,Math.PI*2); ctx.fill();
-  ctx.shadowBlur=0; ctx.shadowColor='transparent'; sDrawCalls++;
-  ctx.fillStyle='rgba(255,255,255,.2)'; ctx.beginPath(); ctx.arc(bx-br*.3,by-br*.8,br*.2,0,Math.PI*2); ctx.fill(); sDrawCalls++;
-  ctx.fillStyle=C.G; ctx.font='9px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('Core Anim',bx,by+br+4);
-  ctx.fillStyle=C.dim; ctx.font='9px monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText('SwiftUI: '+sDrawCalls+' GPU ops',w-5,h-2);
-}
-
-function sStress(ctx, w, h, t) {
-  sDrawCalls=0;
-  const count=stressed?80:28;
-  for(let i=0;i<count;i++){
-    const x=8+(i%8)*(w/8.5), y=8+Math.floor(i/8)*38;
-    const v=(Math.sin(t*speed+i*.3)+1)/2;
-    ctx.fillStyle=`rgba(240,81,56,${.1+v*.42})`;
-    ctx.beginPath(); ctx.roundRect(x,y,w/9.5,28,5); ctx.fill(); sDrawCalls++;
-    ctx.fillStyle=v>.5?'rgba(52,199,89,.85)':'rgba(58,58,60,.5)';
-    ctx.beginPath(); ctx.roundRect(x+1,y+4,24,16,8); ctx.fill(); sDrawCalls++;
-    ctx.shadowColor='rgba(0,0,0,.15)'; ctx.shadowBlur=2;
-    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(x+(v>.5?17:8),y+12,6,0,Math.PI*2); ctx.fill();
-    ctx.shadowBlur=0; ctx.shadowColor='transparent'; sDrawCalls++;
-  }
-  if(stressed){
-    ctx.fillStyle='rgba(74,222,128,.06)'; ctx.fillRect(0,0,w,h);
-    ctx.fillStyle=C.G; ctx.font='10px monospace'; ctx.textAlign='center'; ctx.textBaseline='bottom';
-    ctx.fillText('CA render server: stable',w/2,h-2);
-  }
-  ctx.fillStyle=C.S; ctx.font='9px monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText(sDrawCalls+' ops | '+count+' views',w-5,h-2);
-}
-
-/* ── STATS + PERF BARS ── */
-let fpsStart2 = performance.now();
-function updateStats(now) {
-  fpsFrames++;
-  if(now-fpsStart2>500){
-    const fps=Math.round(fpsFrames/((now-fpsStart2)/1000));
-    fFps=fps;
-    sFps=stressed?Math.max(36,fps-Math.floor(Math.random()*20)):fps;
-    fpsFrames=0; fpsStart2=now;
-  }
-  const fBase=tab==='stress'?(stressed?66:26):(tab==='animation'?20:13);
-  const sBase=tab==='stress'?(stressed?16:7):(tab==='animation'?4:3);
-  const fCpu=fBase+Math.round(Math.random()*5-2);
-  const sCpu=Math.max(1,sBase+Math.round(Math.random()*2-1));
-  document.getElementById('f-draws').textContent=fDrawCalls;
-  document.getElementById('f-fps').textContent=fFps;
-  document.getElementById('f-cpu').textContent=fCpu+'%';
-  document.getElementById('s-draws').textContent=sDrawCalls;
-  document.getElementById('s-fps').textContent=sFps;
-  document.getElementById('s-cpu').textContent=sCpu+'%';
-  const fFpsW=Math.min(100,fFps*100/60);
-  const fCpuW=Math.max(0,100-fCpu*1.2);
-  const sCpuW=Math.max(0,100-sCpu*1.2);
-  const fc=fFpsW>80?'#639922':'#E24B4A';
-  document.getElementById('labPerfTracks').innerHTML=`
-    <div class="lab-perf-line"><span class="lab-perf-lbl">FPS — Flutter</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:${fFpsW}%;background:${fc}"></div></div><span class="lab-perf-val" style="color:${fc}">${fFps}</span></div>
-    <div class="lab-perf-line"><span class="lab-perf-lbl">FPS — SwiftUI</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:100%;background:#639922"></div></div><span class="lab-perf-val" style="color:#639922">${sFps}</span></div>
-    <div class="lab-perf-line"><span class="lab-perf-lbl">CPU — Flutter</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:${100-fCpuW}%;background:${fCpuW>55?'#639922':'#E24B4A'}"></div></div><span class="lab-perf-val" style="color:${fCpuW>55?'#639922':'#E24B4A'}">${fCpu}%</span></div>
-    <div class="lab-perf-line"><span class="lab-perf-lbl">CPU — SwiftUI</span><div class="lab-perf-track"><div class="lab-perf-fill" style="width:${100-sCpuW}%;background:#639922"></div></div><span class="lab-perf-val" style="color:#639922">${sCpu}%</span></div>`;
-}
-
-const DIFFS = {
-  toggle: {
-    f:['7 draw steps per frame','Skia paints track + thumb','Custom spring — not iOS exact','Haptic must be coded manually','44×24px — smaller than UISwitch'],
-    s:['5 steps — OS draws it','UISwitch rendered by iOS itself','iOS exact spring physics built-in','Haptic fires automatically','50×28px — exact system dimensions']
-  },
-  list: {
-    f:['Separator: full-width edge to edge','Flutter simulates scroll momentum','Swipe-delete: Dismissible widget','More draw calls per frame','Cell recycling: Flutter manages'],
-    s:['Separator: inset like UITableView','UIScrollView: 15yr iOS optimization','.swipeActions{} — one modifier','Fewer draw calls — OS composites','Cell recycling: OS handles free']
-  },
-  animation: {
-    f:['Dart thread runs every frame','CPU spike → animation can stutter','AnimationController lifecycle manual','vsync dispose must be coded','Frame budget shared with app work'],
-    s:['Render server: separate OS process','CPU spike → animation stays 60fps','withAnimation() — one line','No dispose — OS manages it','App thread free during animation']
-  },
-  stress: {
-    f:['Each widget redraws on change','Dart GC pauses can drop frames','GPU load grows with widget count','setState() triggers full subtree rebuild','High CPU under many simultaneous anims'],
-    s:['Core Animation composites layers','No GC — runs in separate process','GPU compositing is incremental','Only changed layers redraw','CPU stays low — OS composites']
-  }
-};
-
-function renderDiff() {
-  const d=DIFFS[tab];
-  document.getElementById('labDiff').innerHTML=`
-    <div class="lab-diff-col">
-      <div class="lab-diff-head" style="color:#4da3ff">Flutter — what it costs</div>
-      ${d.f.map(t=>`<div class="lab-diff-item"><span class="lab-diff-ic" style="color:#fb923c">→</span>${t}</div>`).join('')}
-    </div>
-    <div class="lab-diff-col">
-      <div class="lab-diff-head" style="color:#ff7a60">SwiftUI — what you get free</div>
-      ${d.s.map(t=>`<div class="lab-diff-item"><span class="lab-diff-ic" style="color:#4ade80">→</span>${t}</div>`).join('')}
-    </div>`;
-}
-
-/* ── LOOP ── */
-function loop(now) {
-  if(!playing){ raf=requestAnimationFrame(loop); return; }
-  const dt=Math.min((now-lastTime)/1000,.05);
-  lastTime=now;
-  if(stressed){ let s=0; for(let i=0;i<400000;i++) s+=Math.sqrt(i); }
-  frame+=dt*speed;
-  fDraw(fCtx,FW,FH,frame);
-  sDraw(sCtx,SW,SH,frame);
-  updateStats(now);
-  raf=requestAnimationFrame(loop);
-}
-
-function togglePlay() {
-  playing=!playing;
-  const b=document.getElementById('playBtn');
-  b.textContent=playing?'Pause':'Play';
-  b.classList.toggle('on',playing);
-}
-function toggleStress() {
-  stressed=!stressed;
-  const b=document.getElementById('stressBtn');
-  b.classList.toggle('on',stressed);
-  b.textContent=stressed?'Remove stress':'Add CPU stress';
-}
-function updateSpeed(v) {
-  speed=parseFloat(v);
-  document.getElementById('speedLabel').textContent=v+'x';
-}
-
-document.getElementById('labTabs').addEventListener('click',e=>{
-  const t=e.target.closest('.lab-tab'); if(!t) return;
-  document.querySelectorAll('.lab-tab').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active'); tab=t.dataset.tab; renderDiff();
-});
-
+function loop(now){if(!playing){requestAnimationFrame(loop);return;}const dt=Math.min((now-lastTime)/1000,.05);lastTime=now;if(stressed){let s=0;for(let i=0;i<400000;i++)s+=Math.sqrt(i);}frame+=dt*speed;fDraw(fCtx,FW,FH,frame);sDraw(sCtx,SW,SH,frame);updateStats(now);requestAnimationFrame(loop);}
+function togglePlay(){playing=!playing;const b=document.getElementById('playBtn');b.textContent=playing?'Pause':'Play';b.classList.toggle('on',playing);}
+function toggleStress(){stressed=!stressed;const b=document.getElementById('stressBtn');b.classList.toggle('on',stressed);b.textContent=stressed?'Remove stress':'Add CPU stress';}
+function updateSpeed(v){speed=parseFloat(v);document.getElementById('speedLabel').textContent=v+'x';}
+document.getElementById('labTabs').addEventListener('click',e=>{const t=e.target.closest('.lab-tab');if(!t)return;document.querySelectorAll('.lab-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;renderDiff();});
 renderDiff();
-raf=requestAnimationFrame(loop);
+requestAnimationFrame(loop);
 
-/* ════════════════════════════════════════
-   COMPONENT TABLE
-════════════════════════════════════════ */
-const DATA = [
-  { section:"Layout",cat:"layout", rows:[
-    { name:"Vertical Stack",sub:"Column / VStack",
-      f:{code:`Column(\n  mainAxisAlignment:\n    MainAxisAlignment.start,\n  children: [\n    Text('Item A'),\n    Text('Item B'),\n    Text('Item C'),\n  ],\n)`,perf:95,tag:"green",label:"Native"},
-      s:{code:`VStack(alignment: .leading,\n       spacing: 8) {\n  Text("Item A")\n  Text("Item B")\n  Text("Item C")\n}`,perf:97,tag:"green",label:"Native"}},
-    { name:"Horizontal Stack",sub:"Row / HStack",
-      f:{code:`Row(\n  mainAxisAlignment:\n    MainAxisAlignment.spaceBetween,\n  children: [\n    Icon(Icons.star),\n    Text('Label'),\n    Icon(Icons.arrow_forward),\n  ],\n)`,perf:95,tag:"green",label:"Native"},
-      s:{code:`HStack(spacing: 12) {\n  Image(systemName: "star")\n  Text("Label")\n  Image(systemName: "arrow.right")\n}`,perf:97,tag:"green",label:"Native"}},
-    { name:"Z-Stack / Overlay",sub:"Stack / ZStack",
-      f:{code:`Stack(\n  children: [\n    Image.asset('bg.png'),\n    Positioned(\n      bottom: 8, left: 8,\n      child: Text('Caption'),\n    ),\n  ],\n)`,perf:90,tag:"green",label:"Good"},
-      s:{code:`ZStack(alignment: .bottomLeading) {\n  Image("bg")\n  Text("Caption")\n    .padding(8)\n}`,perf:94,tag:"green",label:"Native"}},
-    { name:"Spacer / Flexible",sub:"Expand available space",
-      f:{code:`Row(children: [\n  Text('Left'),\n  Spacer(),\n  Text('Right'),\n])`,perf:97,tag:"green",label:"Zero cost"},
-      s:{code:`HStack {\n  Text("Left")\n  Spacer()\n  Text("Right")\n}`,perf:99,tag:"green",label:"Zero cost"}},
-    { name:"Grid Layout",sub:"2D lazy grid",
-      f:{code:`GridView.builder(\n  gridDelegate:\n    SliverGridDelegateWith\n    FixedCrossAxisCount(\n      crossAxisCount: 2,\n    ),\n  itemCount: items.length,\n  itemBuilder: (ctx, i) =>\n    Card(child: Text(items[i])),\n)`,perf:80,tag:"amber",label:"Medium"},
-      s:{code:`LazyVGrid(columns: [\n  GridItem(.flexible()),\n  GridItem(.flexible())\n]) {\n  ForEach(items) { item in\n    CardView(item)\n  }\n}`,perf:89,tag:"green",label:"Lazy"}},
-  ]},
-  { section:"Text & Typography",cat:"text", rows:[
-    { name:"Text Label",sub:"Basic display text",
-      f:{code:`Text(\n  'Hello World',\n  style: TextStyle(\n    fontSize: 16,\n    fontWeight: FontWeight.w600,\n    color: Colors.black87,\n  ),\n)`,perf:98,tag:"green",label:"Skia render"},
-      s:{code:`Text("Hello World")\n  .font(.system(size: 16,\n    weight: .semibold))\n  .foregroundColor(.primary)`,perf:99,tag:"green",label:"CoreText"}},
-    { name:"Rich Text",sub:"Inline styled spans",
-      f:{code:`RichText(\n  text: TextSpan(children: [\n    TextSpan(\n      text: 'Bold ',\n      style: TextStyle(\n        fontWeight: FontWeight.bold),\n    ),\n    TextSpan(text: 'normal'),\n  ]),\n)`,perf:91,tag:"green",label:"Good"},
-      s:{code:`Text("**Bold** normal")\n// or concatenation:\nText("Hello ") +\nText("bold").bold() +\nText(" world")`,perf:94,tag:"green",label:"Native"}},
-    { name:"Text Overflow",sub:"Truncation / ellipsis",
-      f:{code:`Text(\n  longString,\n  maxLines: 1,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(fontSize: 14),\n)`,perf:97,tag:"green",label:"Native"},
-      s:{code:`Text(longString)\n  .lineLimit(1)\n  .truncationMode(.tail)\n  .font(.system(size: 14))`,perf:98,tag:"green",label:"Native"}},
-  ]},
-  { section:"Input Controls",cat:"input", rows:[
-    { name:"Text Field",sub:"Single-line text input",
-      f:{code:`TextField(\n  controller: _ctrl,\n  decoration: InputDecoration(\n    labelText: 'Name',\n    border: OutlineInputBorder(),\n    prefixIcon: Icon(Icons.person),\n  ),\n  onChanged: (v) => setState((){}),\n)`,perf:87,tag:"amber",label:"Custom render"},
-      s:{code:`TextField("Name",\n  text: $name)\n  .textFieldStyle(.roundedBorder)\n  .padding()`,perf:96,tag:"green",label:"UIKit-native"}},
-    { name:"Toggle / Switch",sub:"Boolean on/off",
-      f:{code:`Switch(\n  value: _isOn,\n  activeColor: Colors.blue,\n  onChanged: (v) =>\n    setState(() => _isOn = v),\n)`,perf:93,tag:"green",label:"Animated"},
-      s:{code:`Toggle("Notifications",\n       isOn: $isOn)\n  .tint(.blue)`,perf:98,tag:"green",label:"OS native"}},
-    { name:"Slider",sub:"Range value selector",
-      f:{code:`Slider(\n  value: _value,\n  min: 0.0,\n  max: 100.0,\n  divisions: 10,\n  onChanged: (v) =>\n    setState(() => _value = v),\n)`,perf:92,tag:"green",label:"Smooth 60fps"},
-      s:{code:`Slider(\n  value: $value,\n  in: 0...100,\n  step: 10\n)`,perf:97,tag:"green",label:"OS native"}},
-    { name:"Picker / Dropdown",sub:"Select from options",
-      f:{code:`DropdownButton<String>(\n  value: _selected,\n  items: options.map((v) =>\n    DropdownMenuItem(\n      value: v,\n      child: Text(v),\n    )).toList(),\n  onChanged: (v) =>\n    setState(() => _selected = v),\n)`,perf:80,tag:"amber",label:"Custom"},
-      s:{code:`Picker("Select",\n  selection: $choice) {\n  ForEach(options, id: \\.self) {\n    Text($0).tag($0)\n  }\n}\n.pickerStyle(.menu)`,perf:96,tag:"green",label:"OS native"}},
-    { name:"Button",sub:"Tap action",
-      f:{code:`ElevatedButton(\n  onPressed: () => doSomething(),\n  style: ElevatedButton.styleFrom(\n    backgroundColor: Colors.blue,\n    shape: RoundedRectangleBorder(\n      borderRadius:\n        BorderRadius.circular(8)),\n  ),\n  child: Text('Submit'),\n)`,perf:95,tag:"green",label:"Material"},
-      s:{code:`Button("Submit") {\n  doSomething()\n}\n.buttonStyle(.borderedProminent)\n.tint(.blue)`,perf:98,tag:"green",label:"Native"}},
-  ]},
-  { section:"Lists & Collections",cat:"list", rows:[
-    { name:"Lazy List",sub:"Virtualized scrolling list",
-      f:{code:`ListView.builder(\n  itemCount: items.length,\n  itemBuilder: (ctx, i) => ListTile(\n    leading: CircleAvatar(\n      child: Text('\${items[i][0]}'),\n    ),\n    title: Text(items[i]),\n    trailing: Icon(Icons.chevron_right),\n  ),\n)`,perf:90,tag:"green",label:"Lazy"},
-      s:{code:`List(items) { item in\n  HStack {\n    Circle()\n      .frame(width: 32, height: 32)\n      .overlay(Text(item.prefix(1)))\n    Text(item)\n    Spacer()\n    Image(systemName: "chevron.right")\n  }\n}`,perf:93,tag:"green",label:"UITableView"}},
-    { name:"Swipe to Delete",sub:"Swipe gesture actions",
-      f:{code:`Dismissible(\n  key: Key(item.id),\n  direction: DismissDirection.endToStart,\n  background: Container(\n    color: Colors.red,\n    alignment: Alignment.centerRight,\n    child: Icon(Icons.delete,\n      color: Colors.white),\n  ),\n  onDismissed: (_) => deleteItem(item),\n  child: ListTile(title: Text(item.name)),\n)`,perf:78,tag:"amber",label:"Custom impl"},
-      s:{code:`List {\n  ForEach(items) { item in\n    Text(item.name)\n      .swipeActions(edge: .trailing) {\n        Button("Delete",\n          role: .destructive) {\n          delete(item)\n        }\n      }\n  }\n  .onDelete(perform: deleteItems)\n}`,perf:95,tag:"green",label:"Native"}},
-    { name:"Section Groups",sub:"Grouped with headers",
-      f:{code:`Column(children: [\n  Container(\n    padding: EdgeInsets.all(8),\n    color: Colors.grey[100],\n    child: Text('SECTION A',\n      style: TextStyle(\n        fontSize: 11,\n        fontWeight: FontWeight.bold)),\n  ),\n  ...groupA.map((item) =>\n    ListTile(title: Text(item))),\n])`,perf:74,tag:"amber",label:"Manual"},
-      s:{code:`List {\n  Section("Section A") {\n    ForEach(groupA) { item in\n      Text(item.name)\n    }\n  }\n  Section("Section B") {\n    ForEach(groupB) { item in\n      Text(item.name)\n    }\n  }\n}\n.listStyle(.insetGrouped)`,perf:97,tag:"green",label:"Native"}},
-  ]},
-  { section:"Navigation",cat:"nav", rows:[
-    { name:"Push Navigation",sub:"Stack push / pop",
-      f:{code:`Navigator.push(context,\n  MaterialPageRoute(\n    builder: (_) => DetailScreen(),\n  ),\n);\n\nNavigator.pushNamed(\n  context, '/detail');`,perf:88,tag:"amber",label:"Imperative"},
-      s:{code:`NavigationLink("Detail",\n  destination: DetailView())\n\nNavigationStack(path: $path) {\n  ...\n  .navigationDestination(\n    for: Item.self) { item in\n    DetailView(item: item)\n  }\n}`,perf:93,tag:"green",label:"Declarative"}},
-    { name:"Bottom Tab Bar",sub:"Tab navigation",
-      f:{code:`Scaffold(\n  body: _screens[_currentIndex],\n  bottomNavigationBar:\n    BottomNavigationBar(\n      currentIndex: _currentIndex,\n      onTap: (i) =>\n        setState(() =>\n          _currentIndex = i),\n      items: [\n        BottomNavigationBarItem(\n          icon: Icon(Icons.home),\n          label: 'Home'),\n      ],\n    ),\n)`,perf:90,tag:"green",label:"Material"},
-      s:{code:`TabView(selection: $tab) {\n  HomeView()\n    .tabItem {\n      Label("Home",\n        systemImage: "house")\n    }\n    .tag(Tab.home)\n}`,perf:97,tag:"green",label:"OS native"}},
-    { name:"Modal Sheet",sub:"Present modal overlay",
-      f:{code:`showModalBottomSheet(\n  context: context,\n  isScrollControlled: true,\n  shape: RoundedRectangleBorder(\n    borderRadius: BorderRadius\n      .vertical(top: Radius.circular(16)),\n  ),\n  builder: (_) => MySheetWidget(),\n);`,perf:85,tag:"amber",label:"Custom"},
-      s:{code:`.sheet(isPresented: $showSheet) {\n  MySheetView()\n    .presentationDetents(\n      [.medium, .large])\n    .presentationDragIndicator(\n      .visible)\n}`,perf:97,tag:"green",label:"Native sheet"}},
-  ]},
-  { section:"Media & Graphics",cat:"media", rows:[
-    { name:"Network Image",sub:"Async image loading",
-      f:{code:`Image.network(\n  'https://example.com/photo.jpg',\n  width: 200, height: 200,\n  fit: BoxFit.cover,\n  loadingBuilder: (ctx, child, p) =>\n    p == null ? child\n    : CircularProgressIndicator(),\n  errorBuilder: (ctx, e, s) =>\n    Icon(Icons.broken_image),\n)`,perf:83,tag:"amber",label:"Dart HTTP"},
-      s:{code:`AsyncImage(url: URL(string: url)) {\n  phase in\n  switch phase {\n  case .success(let img):\n    img.resizable()\n       .scaledToFill()\n  case .failure:\n    Image(systemName: "xmark")\n  default:\n    ProgressView()\n  }\n}`,perf:92,tag:"green",label:"URLSession"}},
-    { name:"Icon",sub:"Vector / system icon",
-      f:{code:`Icon(\n  Icons.favorite_rounded,\n  color: Colors.red,\n  size: 28,\n)\n// Custom SVG:\nSvgPicture.asset(\n  'assets/icons/custom.svg',\n  width: 28,\n)`,perf:98,tag:"green",label:"Canvas draw"},
-      s:{code:`Image(systemName: "heart.fill")\n  .font(.system(size: 28))\n  .foregroundColor(.red)\n  .symbolRenderingMode(.multicolor)\n  .symbolEffect(.bounce)`,perf:99,tag:"green",label:"SF Symbols"}},
-  ]},
-  { section:"Animation",cat:"animation", rows:[
-    { name:"Implicit Animation",sub:"Auto-animate on change",
-      f:{code:`AnimatedContainer(\n  duration: Duration(milliseconds: 300),\n  curve: Curves.easeInOut,\n  width: _expanded ? 240 : 100,\n  height: 50,\n  color: _expanded\n    ? Colors.blue : Colors.grey,\n  child: Center(child: Text('Tap')),\n)`,perf:92,tag:"green",label:"Smooth 60fps"},
-      s:{code:`RoundedRectangle(cornerRadius: 12)\n  .fill(_expanded ? .blue : .gray)\n  .frame(\n    width: _expanded ? 240 : 100,\n    height: 50)\n  .animation(\n    .easeInOut(duration: 0.3),\n    value: _expanded)`,perf:96,tag:"green",label:"Core Animation"}},
-    { name:"Spring Animation",sub:"Physics-based spring",
-      f:{code:`_controller.animateTo(\n  1.0,\n  duration: Duration(ms: 500),\n  curve: Curves.elasticOut,\n);\n\nTweenAnimationBuilder(\n  tween: Tween(begin: 0.0, end: 1.0),\n  duration: Duration(ms: 400),\n  curve: Curves.easeOutBack,\n  builder: (ctx, v, _) =>\n    Transform.scale(scale: v, child: widget),\n)`,perf:85,tag:"amber",label:"Manual ctrl"},
-      s:{code:`withAnimation(\n  .spring(\n    response: 0.4,\n    dampingFraction: 0.6,\n    blendDuration: 0.1)\n) {\n  isVisible.toggle()\n}`,perf:96,tag:"green",label:"CA-backed"}},
-    { name:"Lottie / Rive",sub:"Complex vector anim",
-      f:{code:`Lottie.network(\n  'https://assets/.../anim.json',\n  width: 200, height: 200,\n  repeat: true,\n)\n\nRiveAnimation.asset(\n  'assets/anim.riv',\n)`,perf:68,tag:"red",label:"3rd-party pkg"},
-      s:{code:`// No native Lottie.\n// UIViewRepresentable bridge:\nstruct LottieView:\n  UIViewRepresentable {\n  // ... bridge to Lottie SDK\n}\n\nRiveViewModel(fileName: "anim")\n  .view()`,perf:70,tag:"red",label:"Bridge only"}},
-  ]},
-  { section:"State Management",cat:"state", rows:[
-    { name:"Local State",sub:"Component-scoped",
-      f:{code:`class _CounterState\n    extends State<Counter> {\n  int _count = 0;\n\n  void _increment() {\n    setState(() => _count++);\n  }\n\n  @override\n  Widget build(BuildContext ctx) =>\n    Text('$_count');\n}`,perf:96,tag:"green",label:"setState"},
-      s:{code:`struct CounterView: View {\n  @State private var count = 0\n\n  var body: some View {\n    VStack {\n      Text("\(count)")\n      Button("Increment") {\n        count += 1\n      }\n    }\n  }\n}`,perf:98,tag:"green",label:"@State"}},
-    { name:"Shared / Observable",sub:"Cross-widget state",
-      f:{code:`final counterProvider =\n  StateNotifierProvider<Counter,int>(\n    (ref) => Counter());\n\nConsumer(\n  builder: (ctx, ref, _) {\n    final count = ref.watch(\n      counterProvider);\n    return Text('$count');\n  },\n)`,perf:86,tag:"amber",label:"3rd-party"},
-      s:{code:`@Observable\nclass AppModel {\n  var count = 0\n}\n\nstruct MyView: View {\n  @Environment(AppModel.self)\n  var model\n\n  var body: some View {\n    Text("\(model.count)")\n  }\n}`,perf:94,tag:"green",label:"Built-in"}},
-    { name:"Side Effects",sub:"Lifecycle / onMount",
-      f:{code:`@override\nvoid initState() {\n  super.initState();\n  fetchData();\n}\n\n@override\nvoid didUpdateWidget(old) {\n  super.didUpdateWidget(old);\n  if (old.id != widget.id)\n    refetch();\n}\n\n@override\nvoid dispose() {\n  _controller.dispose();\n  super.dispose();\n}`,perf:90,tag:"green",label:"Lifecycle"},
-      s:{code:`Text("Hello")\n  .onAppear {\n    fetchData()\n  }\n  .onChange(of: id) { _, new in\n    refetch(id: new)\n  }\n  .onDisappear {\n    cleanup()\n  }\n  .task {\n    await loadAsync()\n  }`,perf:95,tag:"green",label:"Modifier-based"}},
-  ]},
-];
+const DATA=[{section:"Layout",cat:"layout",rows:[{name:"Vertical Stack",sub:"Column / VStack",f:{code:`Column(\n  mainAxisAlignment:\n    MainAxisAlignment.start,\n  children: [\n    Text('Item A'),\n    Text('Item B'),\n    Text('Item C'),\n  ],\n)`,perf:95,tag:"green",label:"Native"},s:{code:`VStack(alignment: .leading,\n       spacing: 8) {\n  Text("Item A")\n  Text("Item B")\n  Text("Item C")\n}`,perf:97,tag:"green",label:"Native"}},{name:"Horizontal Stack",sub:"Row / HStack",f:{code:`Row(\n  mainAxisAlignment:\n    MainAxisAlignment.spaceBetween,\n  children: [\n    Icon(Icons.star),\n    Text('Label'),\n    Icon(Icons.arrow_forward),\n  ],\n)`,perf:95,tag:"green",label:"Native"},s:{code:`HStack(spacing: 12) {\n  Image(systemName: "star")\n  Text("Label")\n  Image(systemName: "arrow.right")\n}`,perf:97,tag:"green",label:"Native"}},{name:"Z-Stack / Overlay",sub:"Stack / ZStack",f:{code:`Stack(\n  children: [\n    Image.asset('bg.png'),\n    Positioned(\n      bottom: 8, left: 8,\n      child: Text('Caption'),\n    ),\n  ],\n)`,perf:90,tag:"green",label:"Good"},s:{code:`ZStack(alignment: .bottomLeading) {\n  Image("bg")\n  Text("Caption")\n    .padding(8)\n}`,perf:94,tag:"green",label:"Native"}},{name:"Spacer / Flexible",sub:"Expand available space",f:{code:`Row(children: [\n  Text('Left'),\n  Spacer(),\n  Text('Right'),\n])`,perf:97,tag:"green",label:"Zero cost"},s:{code:`HStack {\n  Text("Left")\n  Spacer()\n  Text("Right")\n}`,perf:99,tag:"green",label:"Zero cost"}},{name:"Grid Layout",sub:"2D lazy grid",f:{code:`GridView.builder(\n  gridDelegate:\n    SliverGridDelegateWith\n    FixedCrossAxisCount(\n      crossAxisCount: 2,\n    ),\n  itemCount: items.length,\n  itemBuilder: (ctx, i) =>\n    Card(child: Text(items[i])),\n)`,perf:80,tag:"amber",label:"Medium"},s:{code:`LazyVGrid(columns: [\n  GridItem(.flexible()),\n  GridItem(.flexible())\n]) {\n  ForEach(items) { item in\n    CardView(item)\n  }\n}`,perf:89,tag:"green",label:"Lazy"}}]},{section:"Text & Typography",cat:"text",rows:[{name:"Text Label",sub:"Basic display text",f:{code:`Text(\n  'Hello World',\n  style: TextStyle(\n    fontSize: 16,\n    fontWeight: FontWeight.w600,\n    color: Colors.black87,\n  ),\n)`,perf:98,tag:"green",label:"Skia render"},s:{code:`Text("Hello World")\n  .font(.system(size: 16,\n    weight: .semibold))\n  .foregroundColor(.primary)`,perf:99,tag:"green",label:"CoreText"}},{name:"Rich Text",sub:"Inline styled spans",f:{code:`RichText(\n  text: TextSpan(children: [\n    TextSpan(\n      text: 'Bold ',\n      style: TextStyle(\n        fontWeight: FontWeight.bold),\n    ),\n    TextSpan(text: 'normal'),\n  ]),\n)`,perf:91,tag:"green",label:"Good"},s:{code:`Text("Hello ") +\nText("bold").bold() +\nText(" world")`,perf:94,tag:"green",label:"Native"}},{name:"Text Overflow",sub:"Truncation / ellipsis",f:{code:`Text(\n  longString,\n  maxLines: 1,\n  overflow: TextOverflow.ellipsis,\n)`,perf:97,tag:"green",label:"Native"},s:{code:`Text(longString)\n  .lineLimit(1)\n  .truncationMode(.tail)`,perf:98,tag:"green",label:"Native"}}]},{section:"Input Controls",cat:"input",rows:[{name:"Text Field",sub:"Single-line text input",f:{code:`TextField(\n  controller: _ctrl,\n  decoration: InputDecoration(\n    labelText: 'Name',\n    border: OutlineInputBorder(),\n  ),\n)`,perf:87,tag:"amber",label:"Custom render"},s:{code:`TextField("Name", text: $name)\n  .textFieldStyle(.roundedBorder)`,perf:96,tag:"green",label:"UIKit-native"}},{name:"Toggle / Switch",sub:"Boolean on/off",f:{code:`Switch(\n  value: _isOn,\n  activeColor: Colors.blue,\n  onChanged: (v) =>\n    setState(() => _isOn = v),\n)`,perf:93,tag:"green",label:"Animated"},s:{code:`Toggle("Notifications",\n       isOn: $isOn)\n  .tint(.blue)`,perf:98,tag:"green",label:"OS native"}},{name:"Slider",sub:"Range value selector",f:{code:`Slider(\n  value: _value,\n  min: 0.0, max: 100.0,\n  onChanged: (v) =>\n    setState(() => _value = v),\n)`,perf:92,tag:"green",label:"Smooth 60fps"},s:{code:`Slider(value: $value, in: 0...100)`,perf:97,tag:"green",label:"OS native"}},{name:"Picker / Dropdown",sub:"Select from options",f:{code:`DropdownButton<String>(\n  value: _selected,\n  items: options.map((v) =>\n    DropdownMenuItem(\n      value: v,\n      child: Text(v),\n    )).toList(),\n  onChanged: (v) =>\n    setState(() => _selected = v),\n)`,perf:80,tag:"amber",label:"Custom"},s:{code:`Picker("Select",\n  selection: $choice) {\n  ForEach(options, id: \\.self) {\n    Text($0).tag($0)\n  }\n}\n.pickerStyle(.menu)`,perf:96,tag:"green",label:"OS native"}},{name:"Button",sub:"Tap action",f:{code:`ElevatedButton(\n  onPressed: () => doSomething(),\n  style: ElevatedButton.styleFrom(\n    backgroundColor: Colors.blue),\n  child: Text('Submit'),\n)`,perf:95,tag:"green",label:"Material"},s:{code:`Button("Submit") { doSomething() }\n  .buttonStyle(.borderedProminent)\n  .tint(.blue)`,perf:98,tag:"green",label:"Native"}}]},{section:"Lists & Collections",cat:"list",rows:[{name:"Lazy List",sub:"Virtualized scrolling list",f:{code:`ListView.builder(\n  itemCount: items.length,\n  itemBuilder: (ctx, i) => ListTile(\n    title: Text(items[i]),\n    trailing: Icon(Icons.chevron_right),\n  ),\n)`,perf:90,tag:"green",label:"Lazy"},s:{code:`List(items) { item in\n  HStack {\n    Text(item)\n    Spacer()\n    Image(systemName: "chevron.right")\n  }\n}`,perf:93,tag:"green",label:"UITableView"}},{name:"Swipe to Delete",sub:"Swipe gesture actions",f:{code:`Dismissible(\n  key: Key(item.id),\n  background: Container(color: Colors.red),\n  onDismissed: (_) => deleteItem(item),\n  child: ListTile(title: Text(item.name)),\n)`,perf:78,tag:"amber",label:"Custom impl"},s:{code:`List {\n  ForEach(items) { item in\n    Text(item.name)\n      .swipeActions(edge: .trailing) {\n        Button("Delete",\n          role: .destructive) {\n          delete(item)\n        }\n      }\n  }\n}`,perf:95,tag:"green",label:"Native"}},{name:"Section Groups",sub:"Grouped with headers",f:{code:`Column(children: [\n  Container(\n    color: Colors.grey[100],\n    child: Text('SECTION A')),\n  ...groupA.map((item) =>\n    ListTile(title: Text(item))),\n])`,perf:74,tag:"amber",label:"Manual"},s:{code:`List {\n  Section("Section A") {\n    ForEach(groupA) { Text($0) }\n  }\n  Section("Section B") {\n    ForEach(groupB) { Text($0) }\n  }\n}\n.listStyle(.insetGrouped)`,perf:97,tag:"green",label:"Native"}}]},{section:"Navigation",cat:"nav",rows:[{name:"Push Navigation",sub:"Stack push / pop",f:{code:`Navigator.push(context,\n  MaterialPageRoute(\n    builder: (_) => DetailScreen(),\n  ),\n);`,perf:88,tag:"amber",label:"Imperative"},s:{code:`NavigationLink("Detail",\n  destination: DetailView())\n\nNavigationStack(path: $path) {\n  ...\n}`,perf:93,tag:"green",label:"Declarative"}},{name:"Bottom Tab Bar",sub:"Tab navigation",f:{code:`Scaffold(\n  body: _screens[_currentIndex],\n  bottomNavigationBar:\n    BottomNavigationBar(\n      currentIndex: _currentIndex,\n      onTap: (i) => setState(() =>\n        _currentIndex = i),\n      items: [...],\n    ),\n)`,perf:90,tag:"green",label:"Material"},s:{code:`TabView(selection: $tab) {\n  HomeView()\n    .tabItem {\n      Label("Home",\n        systemImage: "house")\n    }\n}`,perf:97,tag:"green",label:"OS native"}},{name:"Modal Sheet",sub:"Present modal overlay",f:{code:`showModalBottomSheet(\n  context: context,\n  builder: (_) => MySheetWidget(),\n);`,perf:85,tag:"amber",label:"Custom"},s:{code:`.sheet(isPresented: $showSheet) {\n  MySheetView()\n    .presentationDetents(\n      [.medium, .large])\n}`,perf:97,tag:"green",label:"Native sheet"}}]},{section:"Media & Graphics",cat:"media",rows:[{name:"Network Image",sub:"Async image loading",f:{code:`Image.network(\n  url,\n  fit: BoxFit.cover,\n  loadingBuilder: (ctx, child, p) =>\n    p == null ? child\n    : CircularProgressIndicator(),\n)`,perf:83,tag:"amber",label:"Dart HTTP"},s:{code:`AsyncImage(url: URL(string: url)) {\n  phase in\n  switch phase {\n  case .success(let img):\n    img.resizable().scaledToFill()\n  default: ProgressView()\n  }\n}`,perf:92,tag:"green",label:"URLSession"}},{name:"Icon",sub:"Vector / system icon",f:{code:`Icon(\n  Icons.favorite_rounded,\n  color: Colors.red,\n  size: 28,\n)`,perf:98,tag:"green",label:"Canvas draw"},s:{code:`Image(systemName: "heart.fill")\n  .font(.system(size: 28))\n  .foregroundColor(.red)\n  .symbolEffect(.bounce)`,perf:99,tag:"green",label:"SF Symbols"}}]},{section:"Animation",cat:"animation",rows:[{name:"Implicit Animation",sub:"Auto-animate on change",f:{code:`AnimatedContainer(\n  duration: Duration(milliseconds: 300),\n  curve: Curves.easeInOut,\n  width: _expanded ? 240 : 100,\n  color: _expanded\n    ? Colors.blue : Colors.grey,\n)`,perf:92,tag:"green",label:"Smooth 60fps"},s:{code:`RoundedRectangle(cornerRadius: 12)\n  .fill(_expanded ? .blue : .gray)\n  .frame(width: _expanded ? 240 : 100)\n  .animation(.easeInOut(duration: 0.3),\n    value: _expanded)`,perf:96,tag:"green",label:"Core Animation"}},{name:"Spring Animation",sub:"Physics-based spring",f:{code:`TweenAnimationBuilder(\n  tween: Tween(begin: 0.0, end: 1.0),\n  duration: Duration(ms: 400),\n  curve: Curves.easeOutBack,\n  builder: (ctx, v, _) =>\n    Transform.scale(scale: v, child: w),\n)`,perf:85,tag:"amber",label:"Manual ctrl"},s:{code:`withAnimation(\n  .spring(\n    response: 0.4,\n    dampingFraction: 0.6)\n) {\n  isVisible.toggle()\n}`,perf:96,tag:"green",label:"CA-backed"}},{name:"Lottie / Rive",sub:"Complex vector anim",f:{code:`Lottie.network(url,\n  width: 200, height: 200,\n  repeat: true,\n)`,perf:68,tag:"red",label:"3rd-party pkg"},s:{code:`// UIViewRepresentable bridge\nstruct LottieView:\n  UIViewRepresentable { ... }`,perf:70,tag:"red",label:"Bridge only"}}]},{section:"State Management",cat:"state",rows:[{name:"Local State",sub:"Component-scoped",f:{code:`class _CounterState\n    extends State<Counter> {\n  int _count = 0;\n  void _increment() =>\n    setState(() => _count++);\n}`,perf:96,tag:"green",label:"setState"},s:{code:`struct CounterView: View {\n  @State private var count = 0\n  var body: some View {\n    Button("Inc") { count += 1 }\n    Text("\(count)")\n  }\n}`,perf:98,tag:"green",label:"@State"}},{name:"Shared / Observable",sub:"Cross-widget state",f:{code:`final counterProvider =\n  StateNotifierProvider<Counter,int>(\n    (ref) => Counter());\n\nConsumer(builder: (ctx, ref, _) {\n  final count = ref.watch(counterProvider);\n  return Text('$count');\n})`,perf:86,tag:"amber",label:"3rd-party"},s:{code:`@Observable\nclass AppModel {\n  var count = 0\n}\n\n@Environment(AppModel.self)\nvar model`,perf:94,tag:"green",label:"Built-in"}},{name:"Side Effects",sub:"Lifecycle / onMount",f:{code:`@override\nvoid initState() {\n  super.initState();\n  fetchData();\n}\n@override\nvoid dispose() {\n  _controller.dispose();\n  super.dispose();\n}`,perf:90,tag:"green",label:"Lifecycle"},s:{code:`Text("Hello")\n  .onAppear { fetchData() }\n  .onChange(of: id) { _, new in\n    refetch(id: new)\n  }\n  .task { await loadAsync() }`,perf:95,tag:"green",label:"Modifier-based"}}]}];
 
-function perfColor(v){ return v>=90?'#639922':v>=75?'#BA7517':'#E24B4A'; }
-function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function buildTable(cat) {
-  const wrap=document.getElementById('tableWrap');
-  let html='';
-  DATA.forEach(section=>{
-    if(cat!=='all'&&section.cat!==cat) return;
-    html+=`<div class="section-band"><span>${section.section}</span></div>`;
-    section.rows.forEach(row=>{
-      const fc=perfColor(row.f.perf), sc=perfColor(row.s.perf);
-      html+=`<div class="row" data-cat="${section.cat}">
-  <div class="row-label"><span class="row-name">${row.name}</span><span class="row-sub">${row.sub}</span></div>
-  <div class="cell">
-    <pre class="code-block">${escHtml(row.f.code)}</pre>
-    <div class="perf-row"><div class="perf-track"><div class="perf-fill" style="width:${row.f.perf}%;background:${fc}"></div></div><span class="perf-score" style="color:${fc}">${row.f.perf}</span><span class="tag tag-${row.f.tag}">${row.f.label}</span></div>
-  </div>
-  <div class="cell">
-    <pre class="code-block">${escHtml(row.s.code)}</pre>
-    <div class="perf-row"><div class="perf-track"><div class="perf-fill" style="width:${row.s.perf}%;background:${sc}"></div></div><span class="perf-score" style="color:${sc}">${row.s.perf}</span><span class="tag tag-${row.s.tag}">${row.s.label}</span></div>
-  </div>
-</div>`;
-    });
-  });
-  wrap.innerHTML=html;
-}
-
-document.getElementById('filterBar').addEventListener('click',e=>{
-  const btn=e.target.closest('.filter-btn'); if(!btn) return;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  buildTable(btn.dataset.cat);
-});
-
+function perfColor(v){return v>=90?'#639922':v>=75?'#BA7517':'#E24B4A';}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function buildTable(cat){const wrap=document.getElementById('tableWrap');let html='';DATA.forEach(section=>{if(cat!=='all'&&section.cat!==cat)return;html+=`<div class="section-band"><span>${section.section}</span></div>`;section.rows.forEach(row=>{const fc=perfColor(row.f.perf),sc=perfColor(row.s.perf);html+=`<div class="row" data-cat="${section.cat}"><div class="row-label"><span class="row-name">${row.name}</span><span class="row-sub">${row.sub}</span></div><div class="cell"><pre class="code-block">${escHtml(row.f.code)}</pre><div class="perf-row"><div class="perf-track"><div class="perf-fill" style="width:${row.f.perf}%;background:${fc}"></div></div><span class="perf-score" style="color:${fc}">${row.f.perf}</span><span class="tag tag-${row.f.tag}">${row.f.label}</span></div></div><div class="cell"><pre class="code-block">${escHtml(row.s.code)}</pre><div class="perf-row"><div class="perf-track"><div class="perf-fill" style="width:${row.s.perf}%;background:${sc}"></div></div><span class="perf-score" style="color:${sc}">${row.s.perf}</span><span class="tag tag-${row.s.tag}">${row.s.label}</span></div></div></div>`;});});wrap.innerHTML=html;}
+document.getElementById('filterBar').addEventListener('click',e=>{const btn=e.target.closest('.filter-btn');if(!btn)return;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildTable(btn.dataset.cat);});
 buildTable('all');
 </script>
 </body>
